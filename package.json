@@ -1,0 +1,27 @@
+{
+  "name": "pqc-readiness-tracker",
+  "version": "0.1.0",
+  "description": "Minimal MVP API for tracking PQC readiness and crypto exposure by domain.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "check": "node --check src/server.js && node --check src/app.js && node --check src/config/env.js && node --check src/db/supabase.js && node --check src/middleware/errorHandler.js && node --check src/routes/domainRoutes.js && node --check src/routes/healthRoutes.js && node --check src/routes/scanRoutes.js && node --check src/services/domainService.js && node --check src/services/scanService.js"
+  },
+  "keywords": [
+    "pqc",
+    "express",
+    "supabase",
+    "railway"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.4",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  }
+}
