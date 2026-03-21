@@ -1,13 +1,13 @@
 const express = require("express");
 
-const domainService = require("../services/domainService");
+const testTypeService = require("../services/testTypeService");
 const { parseIdParam } = require("../lib/validation");
 
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const data = await domainService.listDomains();
+    const data = await testTypeService.listTestTypes();
     res.json({ data });
   } catch (error) {
     next(error);
@@ -16,7 +16,7 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const data = await domainService.createDomain(req.body);
+    const data = await testTypeService.createTestType(req.body);
     res.status(201).json({ data });
   } catch (error) {
     next(error);
@@ -26,7 +26,7 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
   try {
     const id = parseIdParam(req.params.id);
-    const data = await domainService.updateDomain(id, req.body);
+    const data = await testTypeService.updateTestType(id, req.body);
     res.json({ data });
   } catch (error) {
     next(error);

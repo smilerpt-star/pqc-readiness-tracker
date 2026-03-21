@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "check": "node --check src/server.js && node --check src/app.js && node --check src/config/env.js && node --check src/db/supabase.js && node --check src/middleware/errorHandler.js && node --check src/routes/domainRoutes.js && node --check src/routes/healthRoutes.js && node --check src/routes/scanRoutes.js && node --check src/services/domainService.js && node --check src/services/scanService.js"
+    "check": "node --check src/server.js && node --check src/app.js && node --check src/config/env.js && node --check src/db/supabase.js && node --check src/lib/http.js && node --check src/lib/validation.js && node --check src/middleware/errorHandler.js && node --check src/repositories/domainRepository.js && node --check src/repositories/domainTestRepository.js && node --check src/repositories/testRunRepository.js && node --check src/repositories/testTypeRepository.js && node --check src/routes/domainRoutes.js && node --check src/routes/domainTestRoutes.js && node --check src/routes/healthRoutes.js && node --check src/routes/runRoutes.js && node --check src/routes/testTypeRoutes.js && node --check src/services/databaseService.js && node --check src/services/domainService.js && node --check src/services/domainTestService.js && node --check src/services/runnerService.js && node --check src/services/runners/pqcPlaceholderRunner.js && node --check src/services/scheduleService.js && node --check src/services/testRunService.js && node --check src/services/testTypeService.js"
   },
   "keywords": [
     "pqc",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.1.0"
   }

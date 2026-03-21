@@ -1,112 +1,67 @@
-const { supabase } = require("../db/supabase");
+const domainRepository = require("../repositories/domainRepository");
+const { unwrapResult } = require("./databaseService");
+const {
+  normalizeDomain,
+  optionalBoolean,
+  optionalTrimmedString,
+  requireObject
+} = require("../lib/validation");
 
-function createHttpError(statusCode, message, name = "Bad Request") {
-  const error = new Error(message);
-  error.statusCode = statusCode;
-  error.name = name;
-  return error;
-}
+function buildDomainPayload(payload, options = {}) {
+  const body = requireObject(payload);
+  const isCreate = options.mode !== "update";
+  const updatePayload = {};
 
-function normalizeDomain(value) {
-  if (typeof value !== "string") {
-    throw createHttpError(400, "domain must be a string");
+  if (isCreate || body.domain !== undefined) {
+    updatePayload.domain = normalizeDomain(body.domain);
   }
 
-  const normalized = value.trim().toLowerCase();
-  const domainPattern = /^(?!-)(?:[a-z0-9-]{1,63}\.)+[a-z]{2,63}$/i;
-
-  if (!domainPattern.test(normalized)) {
-    throw createHttpError(400, "domain must be a valid hostname");
+  if (isCreate || body.company_name !== undefined) {
+    updatePayload.company_name = optionalTrimmedString(body.company_name, "company_name");
   }
 
-  return normalized;
-}
-
-function validateCompanyName(value) {
-  if (value === undefined || value === null || value === "") {
-    return null;
+  if (isCreate || body.sector !== undefined) {
+    updatePayload.sector = optionalTrimmedString(body.sector, "sector");
   }
 
-  if (typeof value !== "string") {
-    throw createHttpError(400, "company_name must be a string");
+  if (isCreate || body.country !== undefined) {
+    updatePayload.country = optionalTrimmedString(body.country, "country");
   }
 
-  return value.trim();
-}
-
-function validateActive(value) {
-  if (value === undefined) {
-    return true;
+  if (isCreate || body.notes !== undefined) {
+    updatePayload.notes = optionalTrimmedString(body.notes, "notes");
   }
 
-  if (typeof value !== "boolean") {
-    throw createHttpError(400, "active must be a boolean");
+  if (isCreate || body.active !== undefined) {
+    updatePayload.active = optionalBoolean(body.active, "active", true);
   }
 
-  return value;
-}
-
-async function createDomain(payload) {
-  if (!payload || typeof payload !== "object") {
-    throw createHttpError(400, "Request body must be a JSON object");
-  }
-
-  const insertPayload = {
-    domain: normalizeDomain(payload.domain),
-    company_name: validateCompanyName(payload.company_name),
-    active: validateActive(payload.active)
-  };
-
-  const { data, error } = await supabase
-    .from("domains")
-    .insert(insertPayload)
-    .select()
-    .single();
-
-  if (error) {
-    if (error.code === "23505") {
-      throw createHttpError(409, "domain already exists", "Conflict");
-    }
-
-    throw createHttpError(500, error.message, "Database Error");
-  }
-
-  return data;
+  return updatePayload;
 }
 
 async function listDomains() {
-  const { data, error } = await supabase
-    .from("domains")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    throw createHttpError(500, error.message, "Database Error");
-  }
-
-  return data;
+  return unwrapResult(await domainRepository.listDomains());
 }
 
-async function getDomainByName(domain) {
-  const normalizedDomain = normalizeDomain(domain);
+async function createDomain(payload) {
+  return unwrapResult(await domainRepository.createDomain(buildDomainPayload(payload)));
+}
 
-  const { data, error } = await supabase
-    .from("domains")
-    .select("*")
-    .eq("domain", normalizedDomain)
-    .maybeSingle();
+async function updateDomain(id, payload) {
+  return unwrapResult(await domainRepository.updateDomain(id, buildDomainPayload(payload, { mode: "update" })), {
+    notFoundMessage: "domain not found"
+  });
+}
 
-  if (error) {
-    throw createHttpError(500, error.message, "Database Error");
-  }
-
-  return data;
+async function getDomainById(id) {
+  return unwrapResult(await domainRepository.findDomainById(id), {
+    notFoundMessage: "domain not found"
+  });
 }
 
 module.exports = {
   createDomain,
+  getDomainById,
   listDomains,
-  getDomainByName,
-  normalizeDomain,
-  createHttpError
+  updateDomain
 };
