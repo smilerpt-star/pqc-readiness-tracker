@@ -157,10 +157,13 @@ async function getCertInfo(domain) {
 }
 
 async function getDnsInfo(domain) {
-  const hasTLSA = await dns
-    .resolve(`_443._tcp.${domain}`, "TLSA")
-    .then((r) => r.length > 0)
-    .catch(() => false);
+  let hasTLSA = false;
+  try {
+    const records = await dns.resolve(`_443._tcp.${domain}`, "TLSA");
+    hasTLSA = records.length > 0;
+  } catch {
+    hasTLSA = false;
+  }
   return { hasTLSA };
 }
 
