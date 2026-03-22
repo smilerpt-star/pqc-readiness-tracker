@@ -45,7 +45,9 @@ async function findPqcOpenssl() {
     process.env.PQC_OPENSSL_BIN,               // explicit override
     "/opt/homebrew/opt/openssl@3/bin/openssl", // Apple Silicon Homebrew
     "/usr/local/opt/openssl@3/bin/openssl",    // Intel Homebrew
-    pathBin,                                   // system PATH (Railway/Linux)
+    "/root/.nix-profile/bin/openssl",          // Nix profile (Railway/Linux)
+    "/nix/var/nix/profiles/default/bin/openssl", // Nix system profile
+    pathBin,                                   // system PATH fallback
   ].filter(Boolean);
 
   for (const bin of candidates) {
