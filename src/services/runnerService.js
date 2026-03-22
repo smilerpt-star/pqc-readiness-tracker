@@ -1,8 +1,10 @@
 const { createHttpError } = require("../lib/http");
 const pqcPlaceholderRunner = require("./runners/pqcPlaceholderRunner");
+const tlsRunner = require("./runners/tlsRunner");
 
 const runners = {
-  pqc_placeholder: pqcPlaceholderRunner
+  pqc_placeholder: pqcPlaceholderRunner,
+  tls_scan: tlsRunner,
 };
 
 function getRunner(runnerType) {
