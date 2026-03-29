@@ -1,5 +1,6 @@
 const domainTestRepository = require("../repositories/domainTestRepository");
 const testRunRepository = require("../repositories/testRunRepository");
+const { supabase } = require("../db/supabase");
 const { unwrapResult } = require("./databaseService");
 const { getDomainById } = require("./domainService");
 const { getTestTypeById } = require("./testTypeService");
@@ -200,7 +201,49 @@ async function runDomainTest(id, triggeredBy = "api") {
   });
 }
 
+// Auto-assign the tls_scan test type to a domain and trigger the first run.
+// Idempotent — does nothing if an assignment already exists.
+// Returns { id, created: true } if newly created, { id, created: false } if already existed.
+async function autoAssignTlsScan(domainId) {
+  const { data: testType } = await supabase
+    .from("test_types")
+    .select("id")
+    .eq("runner_type", "tls_scan")
+    .eq("active", true)
+    .limit(1)
+    .maybeSingle();
+
+  if (!testType) return null; // no active tls_scan test type configured
+
+  const { data: existing } = await supabase
+    .from("domain_tests")
+    .select("id")
+    .eq("domain_id", domainId)
+    .eq("test_type_id", testType.id)
+    .maybeSingle();
+
+  if (existing) return { id: existing.id, created: false };
+
+  const nextRunAt = calculateNextRunAt("daily", true, "02:00", new Date());
+  const { data: created } = await supabase
+    .from("domain_tests")
+    .insert({
+      domain_id: domainId,
+      test_type_id: testType.id,
+      active: true,
+      schedule_enabled: true,
+      schedule_frequency: "daily",
+      schedule_time: "02:00",
+      next_run_at: nextRunAt,
+    })
+    .select("id")
+    .single();
+
+  return created ? { id: created.id, created: true } : null;
+}
+
 module.exports = {
+  autoAssignTlsScan,
   createDomainTest,
   getDomainTestById,
   listDomainTests,
