@@ -183,10 +183,12 @@ function parseDaysUntilExpiry(validTo) {
 // adversaries recording encrypted traffic today to decrypt with quantum
 // computers tomorrow. Key exchange is the critical layer.
 //
-// Score breakdown (0–100):
+// Score breakdown (0–97, DANE bonus can push to 100):
 //   Key Exchange   0–60  — the only layer that protects past sessions
 //   TLS Protocol   0–20  — TLS 1.3 is a prerequisite for PQC KEM
-//   Certificate    0–20  — authentication risk (less urgent than HNDL, informational)
+//   Certificate    0–12  — authentication risk (less urgent than HNDL, informational)
+//                          EC curves are not differentiated (all equally quantum-vulnerable)
+//   DANE bonus     0–5   — certificate pinning independent of classical CA infrastructure
 
 function computeScore(kemInfo, certData, dnsInfo) {
   let score = 0;
@@ -264,13 +266,9 @@ function computeScore(kemInfo, certData, dnsInfo) {
     const bits = cert.bits || 0;
 
     if (isEC) {
-      const strongCurves = ["secp384r1", "secp521r1"];
-      if (strongCurves.includes(cert.asn1Curve)) {
-        score += 15;
-        findings.push({ level: "info", message: `Certificate: ECDSA ${cert.asn1Curve} — small key, acceptable during PQC transition` });
-      } else {
+      {
         score += 12;
-        findings.push({ level: "info", message: `Certificate: ECDSA ${cert.asn1Curve}` });
+        findings.push({ level: "info", message: `Certificate: ECDSA ${cert.asn1Curve} — classical, acceptable during PQC transition` });
       }
     } else if (bits >= 4096) {
       score += 8;

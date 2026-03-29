@@ -16,6 +16,7 @@ app.use(cors({
     "http://localhost:5173",
     "http://localhost:4173",
     /\.vercel\.app$/,
+    /\.railway\.app$/,
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
