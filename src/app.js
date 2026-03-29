@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const healthRoutes = require("./routes/healthRoutes");
+const authRoutes = require("./routes/authRoutes");
 const domainRoutes = require("./routes/domainRoutes");
 const testTypeRoutes = require("./routes/testTypeRoutes");
 const domainTestRoutes = require("./routes/domainTestRoutes");
@@ -25,6 +26,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use("/health", healthRoutes);
+app.use("/auth", authRoutes);
 app.use("/public", publicRoutes);
 app.use("/domains", domainRoutes);
 app.use("/test-types", testTypeRoutes);

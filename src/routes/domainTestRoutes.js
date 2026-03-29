@@ -1,6 +1,7 @@
 const express = require("express");
 
 const domainTestService = require("../services/domainTestService");
+const { requireAuth } = require("../middleware/auth");
 const { parseIdParam } = require("../lib/validation");
 
 const router = express.Router();
@@ -14,7 +15,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/", requireAuth, async (req, res, next) => {
   try {
     const data = await domainTestService.createDomainTest(req.body);
     res.status(201).json({ data });
@@ -23,7 +24,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", requireAuth, async (req, res, next) => {
   try {
     const id = parseIdParam(req.params.id);
     const data = await domainTestService.updateDomainTest(id, req.body);
@@ -33,7 +34,7 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/:id/run", async (req, res, next) => {
+router.post("/:id/run", requireAuth, async (req, res, next) => {
   try {
     const id = parseIdParam(req.params.id);
     const data = await domainTestService.runDomainTest(id, "api");

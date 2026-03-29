@@ -25,9 +25,19 @@ async function findDomainTestById(id) {
   return supabase.from("domain_tests").select(domainTestSelect).eq("id", id).maybeSingle();
 }
 
+async function findDueDomainTests() {
+  return supabase
+    .from("domain_tests")
+    .select(domainTestSelect)
+    .eq("schedule_enabled", true)
+    .eq("active", true)
+    .lte("next_run_at", new Date().toISOString());
+}
+
 module.exports = {
   createDomainTest,
   findDomainTestById,
+  findDueDomainTests,
   listDomainTests,
   updateDomainTest
 };

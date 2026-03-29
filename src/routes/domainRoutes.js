@@ -2,6 +2,7 @@ const express = require("express");
 
 const domainService = require("../services/domainService");
 const { autoAssignTlsScan, runDomainTest } = require("../services/domainTestService");
+const { requireAuth } = require("../middleware/auth");
 const { parseIdParam } = require("../lib/validation");
 
 const router = express.Router();
@@ -40,7 +41,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", requireAuth, async (req, res, next) => {
   try {
     const id = parseIdParam(req.params.id);
     const data = await domainService.updateDomain(id, req.body);
