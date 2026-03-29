@@ -27,11 +27,22 @@ async function updateTestRun(id, payload) {
   return supabase.from("test_runs").update(payload).eq("id", id).select("*").maybeSingle();
 }
 
-async function listTestRuns() {
-  return supabase
+async function listTestRuns(limit) {
+  let query = supabase
     .from("test_runs")
     .select(testRunSelect)
     .order("created_at", { ascending: false });
+  if (limit) query = query.limit(limit);
+  return query;
+}
+
+async function listTestRunsByDomainId(domainId, limit = 200) {
+  return supabase
+    .from("test_runs")
+    .select(`*, domain_test:domain_tests!inner(id, domain_id, test_type_id, last_run_at, next_run_at, last_status, last_score, test_type:test_types(id, key, name, runner_type))`)
+    .eq("domain_test.domain_id", domainId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
 }
 
 async function findTestRunById(id) {
@@ -42,5 +53,6 @@ module.exports = {
   createTestRun,
   findTestRunById,
   listTestRuns,
+  listTestRunsByDomainId,
   updateTestRun
 };

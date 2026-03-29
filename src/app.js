@@ -8,6 +8,7 @@ const testTypeRoutes = require("./routes/testTypeRoutes");
 const domainTestRoutes = require("./routes/domainTestRoutes");
 const runRoutes = require("./routes/runRoutes");
 const publicRoutes = require("./routes/publicRoutes");
+const statsRoutes = require("./routes/statsRoutes");
 const { errorHandler, notFoundHandler } = require("./middleware/errorHandler");
 
 const app = express();
@@ -32,6 +33,7 @@ app.use("/domains", domainRoutes);
 app.use("/test-types", testTypeRoutes);
 app.use("/domain-tests", domainTestRoutes);
 app.use("/runs", runRoutes);
+app.use("/stats", statsRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

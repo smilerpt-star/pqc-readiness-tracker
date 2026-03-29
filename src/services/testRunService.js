@@ -1,8 +1,12 @@
 const testRunRepository = require("../repositories/testRunRepository");
 const { unwrapResult } = require("./databaseService");
 
-async function listRuns() {
-  return unwrapResult(await testRunRepository.listTestRuns());
+async function listRuns(limit) {
+  return unwrapResult(await testRunRepository.listTestRuns(limit));
+}
+
+async function listRunsByDomainId(domainId, limit) {
+  return unwrapResult(await testRunRepository.listTestRunsByDomainId(domainId, limit));
 }
 
 async function getRunById(id) {
@@ -13,5 +17,6 @@ async function getRunById(id) {
 
 module.exports = {
   getRunById,
-  listRuns
+  listRuns,
+  listRunsByDomainId
 };
