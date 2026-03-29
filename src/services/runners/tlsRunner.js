@@ -1,11 +1,11 @@
 const tls = require("tls");
 const dns = require("dns").promises;
-const { execFile } = require("child_process");
+const { execFile, spawn } = require("child_process");
 const { promisify } = require("util");
 
 const execFileAsync = promisify(execFile);
-const TLS_TIMEOUT_MS = 12000;
-const OPENSSL_TIMEOUT_MS = 14000;
+const TLS_TIMEOUT_MS = 8000;
+const OPENSSL_TIMEOUT_MS = 10000;
 
 // PQC hybrid groups to offer in ClientHello — in preference order.
 // Note: X448MLKEM1024 is rejected by OpenSSL 3.6 s_client -groups flag.
@@ -68,58 +68,77 @@ async function findPqcOpenssl() {
 
 // ─── PQC Key Exchange Probe ───────────────────────────────────────────────────
 
+function parseKeyExchangeOutput(output) {
+  const groupMatch = output.match(/Negotiated TLS1\.3 group:\s*(\S+)/i);
+  const negotiatedGroup = groupMatch?.[1] || null;
+
+  const protoMatch = output.match(/Protocol\s*:\s*(TLSv[\d.]+)/i);
+  const protocol = protoMatch?.[1] || null;
+
+  // Classical ephemeral key info — "Peer Temp Key" (TLS 1.3 -brief) or "Server Temp Key" (TLS 1.2)
+  const tempKeyMatch = output.match(/(?:Peer|Server) Temp Key:\s*([^\n]+)/i);
+  const serverTempKey = tempKeyMatch?.[1]?.trim() || null;
+
+  const isPqcKem = negotiatedGroup ? PQC_KEM_GROUPS.has(negotiatedGroup) : false;
+
+  return { negotiatedGroup, protocol, serverTempKey, isPqcKem, available: true };
+}
+
+// Stream openssl s_client output and kill the process as soon as the TLS
+// handshake summary is complete — avoids waiting for the server's TLS
+// close_notify which can stall for 5-10 s on keep-alive servers.
 async function probeKeyExchange(opensslBin, domain) {
-  let stdout = "", stderr = "";
-  try {
-    const result = await execFileAsync(
-      opensslBin,
-      [
-        "s_client",
-        "-connect", `${domain}:443`,
-        "-servername", domain,
-        "-groups", PQC_GROUPS,
-        "-brief",
-      ],
-      {
-        timeout: OPENSSL_TIMEOUT_MS,
-        input: "",           // close stdin so s_client exits after handshake
-        encoding: "utf8",
-      }
-    );
-    stdout = result.stdout;
-    stderr = result.stderr;
-  } catch (err) {
-    // openssl s_client often exits non-zero even on successful handshake;
-    // the output is still valid and available on the error object
-    if (err.stdout || err.stderr) {
-      stdout = err.stdout || "";
-      stderr = err.stderr || "";
-    } else {
-      return { negotiatedGroup: null, protocol: null, serverTempKey: null, isPqcKem: false, available: false, error: err.message };
+  return new Promise((resolve) => {
+    let output = "";
+    let settled = false;
+
+    const child = spawn(opensslBin, [
+      "s_client",
+      "-connect", `${domain}:443`,
+      "-servername", domain,
+      "-groups", PQC_GROUPS,
+      "-brief",
+    ]);
+
+    // Close stdin immediately so s_client doesn't block on input
+    child.stdin.end();
+
+    function finish() {
+      if (settled) return;
+      settled = true;
+      child.kill("SIGTERM");
     }
-  }
 
-  try {
-    const output = stdout + stderr;
+    function tryParse() {
+      // The -brief handshake summary ends with a "Verify" line.
+      // Kill the process as soon as we have it — no need to wait for TLS shutdown.
+      if (/Verif(?:y return code|ication error)/i.test(output)) {
+        finish();
+      }
+    }
 
-    // Negotiated TLS 1.3 group — only present in TLS 1.3 connections
-    const groupMatch = output.match(/Negotiated TLS1\.3 group:\s*(\S+)/i);
-    const negotiatedGroup = groupMatch?.[1] || null;
+    child.stdout.on("data", (d) => { output += d.toString(); tryParse(); });
+    child.stderr.on("data", (d) => { output += d.toString(); tryParse(); });
 
-    // Protocol version
-    const protoMatch = output.match(/Protocol\s*:\s*(TLSv[\d.]+)/i);
-    const protocol = protoMatch?.[1] || null;
+    // Hard timeout — covers unreachable hosts and very slow servers
+    const timer = setTimeout(finish, OPENSSL_TIMEOUT_MS);
 
-    // Classical ephemeral key info — "Peer Temp Key" (TLS 1.3 -brief) or "Server Temp Key" (TLS 1.2)
-    const tempKeyMatch = output.match(/(?:Peer|Server) Temp Key:\s*([^\n]+)/i);
-    const serverTempKey = tempKeyMatch?.[1]?.trim() || null;
+    child.on("close", () => {
+      clearTimeout(timer);
+      if (!settled) settled = true;
+      try {
+        resolve(parseKeyExchangeOutput(output));
+      } catch {
+        resolve({ negotiatedGroup: null, protocol: null, serverTempKey: null, isPqcKem: false, available: false });
+      }
+    });
 
-    const isPqcKem = negotiatedGroup ? PQC_KEM_GROUPS.has(negotiatedGroup) : false;
-
-    return { negotiatedGroup, protocol, serverTempKey, isPqcKem, available: true };
-  } catch (parseErr) {
-    return { negotiatedGroup: null, protocol: null, serverTempKey: null, isPqcKem: false, available: false, error: parseErr.message };
-  }
+    child.on("error", (err) => {
+      clearTimeout(timer);
+      if (!settled) settled = true;
+      resolve({ negotiatedGroup: null, protocol: null, serverTempKey: null, isPqcKem: false, available: false, error: err.message });
+    });
+  });
 }
 
 // ─── Certificate Info (via Node.js TLS) ──────────────────────────────────────
