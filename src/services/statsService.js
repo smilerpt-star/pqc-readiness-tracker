@@ -87,15 +87,14 @@ async function getStats() {
     pct_ready: scores.length ? Math.round(scores.filter(s => s >= 80).length / scores.length * 100) : 0,
   })).sort((a, b) => (b.avg_score ?? -1) - (a.avg_score ?? -1));
 
-  // ── Score distribution ─────────────────────────────────────────────────────
+  // ── Score distribution (3 semantic tiers, aligned with pqc_ready/partial/legacy) ──
   const score_distribution = [
-    { label: "0–19",   min: 0,  max: 20  },
-    { label: "20–39",  min: 20, max: 40  },
-    { label: "40–59",  min: 40, max: 60  },
-    { label: "60–79",  min: 60, max: 80  },
-    { label: "80–100", min: 80, max: 101 },
+    { label: "Legacy",        key: "legacy",        min: 0,  max: 40  },
+    { label: "Transitioning", key: "transitioning", min: 40, max: 80  },
+    { label: "PQC-Active",    key: "pqc_active",    min: 80, max: 101 },
   ].map(b => ({
     label: b.label,
+    key:   b.key,
     count: allScores.filter(s => s >= b.min && s < b.max).length,
   }));
 
