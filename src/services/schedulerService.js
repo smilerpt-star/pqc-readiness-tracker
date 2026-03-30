@@ -1,4 +1,4 @@
-const { getConfig } = require("../repositories/configRepository");
+const { getConfig, setConfig } = require("../repositories/configRepository");
 const domainTestRepository = require("../repositories/domainTestRepository");
 const { runDomainTest } = require("./domainTestService");
 const { unwrapResult } = require("./databaseService");
@@ -6,7 +6,7 @@ const { unwrapResult } = require("./databaseService");
 const TICK_MS = 60_000; // check every minute
 const CONCURRENCY = 10;
 
-let _lastScanDate = null; // 'YYYY-MM-DD' UTC
+let _lastScanDate = null; // 'YYYY-MM-DD' UTC — kept in sync with DB config key 'last_scan_date'
 let _running = false;
 let _lastRunStats = null; // { date, total, pass, fail, errors, duration_ms }
 
@@ -68,6 +68,11 @@ async function tick() {
   const now = new Date();
   const todayUTC = now.toISOString().split("T")[0];
 
+  // Sync in-memory state from DB on first tick after restart
+  if (_lastScanDate === null) {
+    try { _lastScanDate = (await getConfig("last_scan_date")) || ""; } catch {}
+  }
+
   if (_lastScanDate === todayUTC) return;
 
   let scanTime = "02:00";
@@ -76,6 +81,7 @@ async function tick() {
   const [h, m] = scanTime.split(":").map(Number);
   if (now.getUTCHours() > h || (now.getUTCHours() === h && now.getUTCMinutes() >= m)) {
     _lastScanDate = todayUTC;
+    setConfig("last_scan_date", todayUTC).catch(console.error);
     runAll("scheduled").catch(console.error);
   }
 }
