@@ -34,8 +34,17 @@ async function findDueDomainTests() {
     .lte("next_run_at", new Date().toISOString());
 }
 
+async function findAllActiveDomainTests() {
+  return supabase
+    .from("domain_tests")
+    .select("id, domain_id, test_type_id, domain:domains!inner(id, active)")
+    .eq("active", true)
+    .eq("domain.active", true);
+}
+
 module.exports = {
   createDomainTest,
+  findAllActiveDomainTests,
   findDomainTestById,
   findDueDomainTests,
   listDomainTests,

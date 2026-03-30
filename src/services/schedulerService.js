@@ -1,37 +1,88 @@
+const { getConfig } = require("../repositories/configRepository");
 const domainTestRepository = require("../repositories/domainTestRepository");
 const { runDomainTest } = require("./domainTestService");
 const { unwrapResult } = require("./databaseService");
 
-const INTERVAL_MS = 5 * 60 * 1000; // check every 5 minutes
-let _busy = false;
+const TICK_MS = 60_000; // check every minute
+const CONCURRENCY = 10;
+
+let _lastScanDate = null; // 'YYYY-MM-DD' UTC
+let _running = false;
+let _lastRunStats = null; // { date, total, pass, fail, errors, duration_ms }
+
+function getLastRunStats() { return _lastRunStats; }
+function isRunning() { return _running; }
+
+async function runWithConcurrency(tasks, concurrency) {
+  let i = 0;
+  async function worker() {
+    while (i < tasks.length) {
+      const task = tasks[i++];
+      await task().catch(() => {});
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(concurrency, tasks.length) }, worker));
+}
+
+async function runAll(trigger = "scheduled") {
+  if (_running) return { skipped: true, reason: "already running" };
+  _running = true;
+  const start = Date.now();
+  let pass = 0, fail = 0, errors = 0;
+
+  try {
+    // Get all active domain_tests for active domains
+    const { data: dts, error } = await domainTestRepository.findAllActiveDomainTests();
+    if (error) throw error;
+    const domainTests = dts || [];
+
+    const tasks = domainTests.map(dt => async () => {
+      try {
+        const result = await runDomainTest(dt.id, trigger);
+        if (result?.status === "pass") pass++;
+        else fail++;
+      } catch {
+        errors++;
+      }
+    });
+
+    await runWithConcurrency(tasks, CONCURRENCY);
+
+    _lastRunStats = {
+      date: new Date().toISOString(),
+      total: domainTests.length,
+      pass,
+      fail,
+      errors,
+      duration_ms: Date.now() - start,
+      trigger,
+    };
+  } finally {
+    _running = false;
+  }
+
+  return _lastRunStats;
+}
 
 async function tick() {
-  if (_busy) return;
-  _busy = true;
-  try {
-    const due = unwrapResult(await domainTestRepository.findDueDomainTests());
-    if (!due || due.length === 0) return;
+  const now = new Date();
+  const todayUTC = now.toISOString().split("T")[0];
 
-    console.log(`[scheduler] ${due.length} test(s) due`);
-    for (const dt of due) {
-      try {
-        await runDomainTest(dt.id, "scheduled");
-        console.log(`[scheduler] ok domain_test=${dt.id}`);
-      } catch (err) {
-        console.error(`[scheduler] failed domain_test=${dt.id}: ${err.message}`);
-      }
-    }
-  } catch (err) {
-    console.error(`[scheduler] tick error: ${err.message}`);
-  } finally {
-    _busy = false;
+  if (_lastScanDate === todayUTC) return;
+
+  let scanTime = "02:00";
+  try { scanTime = (await getConfig("daily_scan_time")) || "02:00"; } catch {}
+
+  const [h, m] = scanTime.split(":").map(Number);
+  if (now.getUTCHours() > h || (now.getUTCHours() === h && now.getUTCMinutes() >= m)) {
+    _lastScanDate = todayUTC;
+    runAll("scheduled").catch(console.error);
   }
 }
 
 function start() {
-  console.log("[scheduler] started — interval 5min");
-  tick(); // run once immediately on boot
-  setInterval(tick, INTERVAL_MS);
+  tick();
+  setInterval(tick, TICK_MS);
 }
 
-module.exports = { start };
+module.exports = { start, runAll, isRunning, getLastRunStats };

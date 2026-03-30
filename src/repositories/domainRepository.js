@@ -20,9 +20,14 @@ async function findDomainByName(domain) {
   return supabase.from("domains").select("*").eq("domain", domain).maybeSingle();
 }
 
+async function findDomainByDomain(domain) {
+  return supabase.from("domains").select("*").eq("domain", domain).maybeSingle();
+}
+
 module.exports = {
   createDomain,
   findDomainById,
+  findDomainByDomain,
   findDomainByName,
   listDomains,
   updateDomain
