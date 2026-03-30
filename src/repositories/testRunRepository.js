@@ -40,7 +40,7 @@ async function listTestRunsByDomainId(domainId, limit = 200) {
   return supabase
     .from("test_runs")
     .select(`*, domain_test:domain_tests!inner(id, domain_id, test_type_id, last_run_at, next_run_at, last_status, last_score, test_type:test_types(id, key, name, runner_type))`)
-    .eq("domain_test.domain_id", domainId)
+    .eq("domain_tests.domain_id", domainId)
     .order("created_at", { ascending: false })
     .limit(limit);
 }

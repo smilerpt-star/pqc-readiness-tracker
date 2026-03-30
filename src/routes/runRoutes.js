@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const domainId = req.query.domain_id ? Number(req.query.domain_id) : null;
+    const domainId = req.query.domain_id || null;
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
     const data = domainId
       ? await testRunService.listRunsByDomainId(domainId, limit)
