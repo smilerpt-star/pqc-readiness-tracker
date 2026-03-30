@@ -1,15 +1,30 @@
 const { supabase } = require("../db/supabase");
 
 async function getStats() {
-  const [{ data: domains, error: dErr }, { data: domainTests, error: dtErr }] = await Promise.all([
+  const [
+    { data: domains,     error: dErr  },
+    { data: domainTests, error: dtErr },
+    { data: indexes },
+    { data: diLinks },
+    { data: runs },
+  ] = await Promise.all([
     supabase.from("domains").select("id, country, sector, active"),
     supabase.from("domain_tests").select("domain_id, last_score, last_status, last_run_at"),
+    supabase.from("indexes").select("id, key, name"),
+    supabase.from("domain_indexes").select("domain_id, index_id"),
+    supabase.from("test_runs")
+      .select("score, started_at")
+      .not("score", "is", null)
+      .gte("started_at", new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString())
+      .order("started_at", { ascending: true }),
   ]);
 
   if (dErr) throw dErr;
   if (dtErr) throw dtErr;
 
-  // Best score per domain (take max if multiple tests)
+  const avg = arr => arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : null;
+
+  // Best score per domain
   const scoreMap = {};
   (domainTests || []).forEach(dt => {
     if (dt.last_score !== null && dt.last_score !== undefined) {
@@ -19,8 +34,13 @@ async function getStats() {
     }
   });
 
-  const activeDomains = (domains || []).filter(d => d.active !== false);
+  const lastRunAt = (domainTests || [])
+    .map(dt => dt.last_run_at).filter(Boolean).sort().reverse()[0] || null;
 
+  const activeDomains = (domains || []).filter(d => d.active !== false);
+  const allScores = Object.values(scoreMap);
+
+  // ── Aggregation helper ─────────────────────────────────────────────────────
   function aggregate(key, list) {
     const map = {};
     list.forEach(d => {
@@ -30,25 +50,90 @@ async function getStats() {
       const score = scoreMap[d.id];
       if (score !== undefined) map[val].scores.push(score);
     });
-    return Object.entries(map)
-      .map(([label, { count, scores }]) => ({
-        [key]: label,
-        count,
-        avg_score: scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : null,
-        scored: scores.length,
-      }))
-      .sort((a, b) => b.count - a.count);
+    return Object.entries(map).map(([label, { count, scores }]) => ({
+      [key]: label,
+      count,
+      avg_score: avg(scores),
+      scored: scores.length,
+      pqc_ready: scores.filter(s => s >= 80).length,
+    }));
   }
 
-  const allScores = Object.values(scoreMap);
+  // ── By index ───────────────────────────────────────────────────────────────
+  const domainIndexMap = {};
+  (diLinks || []).forEach(({ domain_id, index_id }) => {
+    if (!domainIndexMap[domain_id]) domainIndexMap[domain_id] = [];
+    domainIndexMap[domain_id].push(index_id);
+  });
+
+  const indexAgg = {};
+  (indexes || []).forEach(idx => {
+    indexAgg[idx.id] = { name: idx.name, key: idx.key, scores: [], count: 0 };
+  });
+  activeDomains.forEach(d => {
+    (domainIndexMap[d.id] || []).forEach(idxId => {
+      if (!indexAgg[idxId]) return;
+      indexAgg[idxId].count++;
+      const score = scoreMap[d.id];
+      if (score !== undefined) indexAgg[idxId].scores.push(score);
+    });
+  });
+
+  const by_index = Object.values(indexAgg).map(({ name, key, scores, count }) => ({
+    index: name, key, count,
+    avg_score: avg(scores),
+    scored: scores.length,
+    pqc_ready: scores.filter(s => s >= 80).length,
+    pct_ready: scores.length ? Math.round(scores.filter(s => s >= 80).length / scores.length * 100) : 0,
+  })).sort((a, b) => (b.avg_score ?? -1) - (a.avg_score ?? -1));
+
+  // ── Score distribution ─────────────────────────────────────────────────────
+  const score_distribution = [
+    { label: "0–19",   min: 0,  max: 20  },
+    { label: "20–39",  min: 20, max: 40  },
+    { label: "40–59",  min: 40, max: 60  },
+    { label: "60–79",  min: 60, max: 80  },
+    { label: "80–100", min: 80, max: 101 },
+  ].map(b => ({
+    label: b.label,
+    count: allScores.filter(s => s >= b.min && s < b.max).length,
+  }));
+
+  // ── Weekly trend (last 12 weeks from test_runs) ────────────────────────────
+  const weekMap = {};
+  (runs || []).forEach(r => {
+    const d = new Date(r.started_at);
+    const monday = new Date(d);
+    monday.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+    const key = monday.toISOString().split("T")[0];
+    if (!weekMap[key]) weekMap[key] = [];
+    weekMap[key].push(r.score);
+  });
+  const trend_weekly = Object.entries(weekMap)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .slice(-12)
+    .map(([week, scores]) => ({ week, avg_score: avg(scores), count: scores.length }));
+
+  // ── PQC readiness summary ──────────────────────────────────────────────────
+  const n = allScores.length;
+  const pqc_ready_count   = allScores.filter(s => s >= 80).length;
+  const pqc_partial_count = allScores.filter(s => s >= 40 && s < 80).length;
+  const pqc_legacy_count  = allScores.filter(s => s < 40).length;
 
   return {
-    total_domains: (domains || []).length,
+    total_domains:  (domains || []).length,
     active_domains: activeDomains.length,
-    total_scored: allScores.length,
-    avg_score: allScores.length > 0 ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length) : null,
-    by_country: aggregate("country", activeDomains),
-    by_sector: aggregate("sector", activeDomains),
+    total_scored:   n,
+    avg_score:      avg(allScores),
+    last_scan_at:   lastRunAt,
+    pqc_ready:   { count: pqc_ready_count,   pct: n ? Math.round(pqc_ready_count   / n * 100) : 0 },
+    pqc_partial: { count: pqc_partial_count, pct: n ? Math.round(pqc_partial_count / n * 100) : 0 },
+    pqc_legacy:  { count: pqc_legacy_count,  pct: n ? Math.round(pqc_legacy_count  / n * 100) : 0 },
+    by_index,
+    by_country: aggregate("country", activeDomains).sort((a, b) => b.count - a.count),
+    by_sector:  aggregate("sector",  activeDomains).sort((a, b) => (b.avg_score ?? -1) - (a.avg_score ?? -1)),
+    score_distribution,
+    trend_weekly,
   };
 }
 
