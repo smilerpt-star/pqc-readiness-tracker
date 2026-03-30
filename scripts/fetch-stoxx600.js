@@ -118,7 +118,25 @@ async function resolveQids(rows) {
     process.stdout.write('.');
   }
 
-  console.log(` ${Object.keys(qidMap).length} resolved`);
+  // Fallback: Wikidata label search for unresolved titles
+  const unresolved = rows.filter(r => !qidMap[r.wikiTitle]);
+  if (unresolved.length > 0) {
+    process.stdout.write(`\n  Label search fallback for ${unresolved.length} unresolved… `);
+    for (const row of unresolved) {
+      try {
+        const url = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(row.wikiTitle)}&language=en&type=item&limit=1&format=json`;
+        const res = await fetch(url, { headers: { 'User-Agent': 'PQCReadinessTracker/1.0' } });
+        if (!res.ok) continue;
+        const j = await res.json();
+        const hit = j.search?.[0];
+        if (hit?.id) qidMap[row.wikiTitle] = hit.id;
+        await sleep(100);
+      } catch { /* skip */ }
+    }
+    process.stdout.write(`done\n`);
+  }
+
+  console.log(`  Total resolved: ${Object.keys(qidMap).length}`);
   return qidMap;
 }
 
@@ -130,14 +148,12 @@ async function fetchDomains(qids) {
   for (let i = 0; i < qids.length; i += WD_BATCH) {
     const chunk = qids.slice(i, i + WD_BATCH);
     const values = chunk.map(q => `wd:${q}`).join(' ');
+    // Preferred rank first; any rank as fallback within same query
     const sparql = `
-SELECT ?company ?website WHERE {
+SELECT ?company ?website (IF(EXISTS { ?company p:P856 [ps:P856 ?website; wikibase:rank wikibase:PreferredRank] }, 1, 0) AS ?pref) WHERE {
   VALUES ?company { ${values} }
-  OPTIONAL {
-    ?company p:P856 ?ws.
-    ?ws ps:P856 ?website; wikibase:rank wikibase:PreferredRank.
-  }
-}`;
+  ?company wdt:P856 ?website.
+} ORDER BY DESC(?pref)`;
     try {
       const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(sparql)}&format=json`;
       const res = await fetch(url, { headers: { Accept: 'application/sparql-results+json', 'User-Agent': 'PQCReadinessTracker/1.0' } });
@@ -152,30 +168,6 @@ SELECT ?company ?website WHERE {
     } catch (e) { console.warn(`  Batch ${i} failed: ${e.message}`); }
     await sleep(400);
     process.stdout.write('.');
-  }
-
-  // Second pass: any-rank fallback for QIDs still missing
-  const missing = qids.filter(q => !domainMap[q]);
-  if (missing.length > 0) {
-    process.stdout.write(`\n  Fallback for ${missing.length} missing… `);
-    for (let i = 0; i < missing.length; i += WD_BATCH) {
-      const chunk = missing.slice(i, i + WD_BATCH);
-      const values = chunk.map(q => `wd:${q}`).join(' ');
-      const sparql = `SELECT ?company ?website WHERE { VALUES ?company { ${values} } OPTIONAL { ?company wdt:P856 ?website. } }`;
-      try {
-        const url = `https://query.wikidata.org/sparql?query=${encodeURIComponent(sparql)}&format=json`;
-        const res = await fetch(url, { headers: { Accept: 'application/sparql-results+json', 'User-Agent': 'PQCReadinessTracker/1.0' } });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const j = await res.json();
-        for (const b of j.results.bindings) {
-          const qid = b.company.value.split('/').pop();
-          if (b.website?.value && !domainMap[qid]) {
-            domainMap[qid] = cleanDomain(b.website.value);
-          }
-        }
-      } catch (e) { console.warn(`  Fallback batch ${i} failed: ${e.message}`); }
-      await sleep(400);
-    }
   }
 
   console.log(`\n  ${Object.keys(domainMap).length} domains found`);
