@@ -34,8 +34,8 @@ async function getStats() {
     }
   });
 
-  const lastRunAt = (domainTests || [])
-    .map(dt => dt.last_run_at).filter(Boolean).sort().reverse()[0] || null;
+  // Use test_runs.started_at — same source as trend chart, avoids started/finished date mismatch
+  const lastRunAt = (runs || []).length > 0 ? runs[runs.length - 1].started_at : null;
 
   const activeDomains = (domains || []).filter(d => d.active !== false);
   const allScores = Object.values(scoreMap);
