@@ -15,7 +15,7 @@ async function getStats() {
     supabase.from("test_runs")
       .select("score, started_at")
       .not("score", "is", null)
-      .gte("started_at", new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString())
+      .gte("started_at", new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString())
       .order("started_at", { ascending: true }),
   ]);
 
@@ -98,20 +98,44 @@ async function getStats() {
     count: allScores.filter(s => s >= b.min && s < b.max).length,
   }));
 
-  // ── Weekly trend (last 12 weeks from test_runs) ────────────────────────────
-  const weekMap = {};
+  // ── Trend data (daily / weekly / monthly) ─────────────────────────────────
+  const dayMap = {}, weekMap = {}, monthMap = {};
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
   (runs || []).forEach(r => {
     const d = new Date(r.started_at);
+    // daily (last 30 days only)
+    if (r.started_at >= thirtyDaysAgo) {
+      const dk = r.started_at.split("T")[0];
+      if (!dayMap[dk]) dayMap[dk] = [];
+      dayMap[dk].push(r.score);
+    }
+    // weekly (ISO week, keyed by monday)
     const monday = new Date(d);
     monday.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
-    const key = monday.toISOString().split("T")[0];
-    if (!weekMap[key]) weekMap[key] = [];
-    weekMap[key].push(r.score);
+    const wk = monday.toISOString().split("T")[0];
+    if (!weekMap[wk]) weekMap[wk] = [];
+    weekMap[wk].push(r.score);
+    // monthly
+    const mk = r.started_at.substring(0, 7);
+    if (!monthMap[mk]) monthMap[mk] = [];
+    monthMap[mk].push(r.score);
   });
+
+  const trend_daily = Object.entries(dayMap)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .slice(-30)
+    .map(([day, scores]) => ({ day, avg_score: avg(scores), count: scores.length }));
+
   const trend_weekly = Object.entries(weekMap)
     .sort(([a], [b]) => a.localeCompare(b))
     .slice(-12)
     .map(([week, scores]) => ({ week, avg_score: avg(scores), count: scores.length }));
+
+  const trend_monthly = Object.entries(monthMap)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .slice(-12)
+    .map(([month, scores]) => ({ month, avg_score: avg(scores), count: scores.length }));
 
   // ── PQC readiness summary ──────────────────────────────────────────────────
   const n = allScores.length;
@@ -132,7 +156,9 @@ async function getStats() {
     by_country: aggregate("country", activeDomains).sort((a, b) => b.count - a.count),
     by_sector:  aggregate("sector",  activeDomains).sort((a, b) => (b.avg_score ?? -1) - (a.avg_score ?? -1)),
     score_distribution,
+    trend_daily,
     trend_weekly,
+    trend_monthly,
   };
 }
 
