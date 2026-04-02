@@ -1,24 +1,49 @@
 const { supabase } = require("../db/supabase");
 
+// Fetch all test_runs rows via pagination — Supabase PostgREST caps at 1000
+// rows per request regardless of .limit(); .range() paginates correctly.
+async function fetchAllTestRuns(yearAgo) {
+  const PAGE = 1000;
+  let offset = 0;
+  const all = [];
+  for (let page = 0; page < 100; page++) {
+    const { data, error } = await supabase
+      .from("test_runs")
+      .select("score, started_at")
+      .not("score", "is", null)
+      .gte("started_at", yearAgo)
+      .order("started_at", { ascending: true })
+      .range(offset, offset + PAGE - 1);
+    if (error) throw error;
+    if (!data?.length) break;
+    all.push(...data);
+    if (data.length < PAGE) break;
+    offset += PAGE;
+  }
+  return all;
+}
+
 async function getStats() {
+  const yearAgo = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
+
   const [
-    { data: domains,     error: dErr      },
-    { data: domainTests, error: dtErr     },
+    { data: domains,     error: dErr  },
+    { data: domainTests, error: dtErr },
     { data: indexes },
     { data: diLinks },
-    { data: trendRows,   error: trendErr  },
+    runs,
   ] = await Promise.all([
     supabase.from("domains").select("id, country, sector, active"),
     supabase.from("domain_tests").select("domain_id, last_score, last_status, last_run_at"),
     supabase.from("indexes").select("id, key, name"),
     supabase.from("domain_indexes").select("domain_id, index_id"),
-    supabase.rpc("get_trend_data"),
+    fetchAllTestRuns(yearAgo),
   ]);
 
   if (dErr) throw dErr;
   if (dtErr) throw dtErr;
-  if (trendErr) console.error("[statsService] get_trend_data RPC error:", trendErr.message);
-  else console.log("[statsService] get_trend_data rows:", (trendRows || []).length);
+
+  console.log("[statsService] test_runs fetched:", runs.length);
 
   const avg = arr => arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : null;
 
@@ -32,11 +57,8 @@ async function getStats() {
     }
   });
 
-  // last_scan_at: most recent started_at across all trend rows
-  const allTrend = trendRows || [];
-  const lastRunAt = allTrend.length > 0
-    ? allTrend.reduce((max, r) => r.last_started_at > max ? r.last_started_at : max, "")
-    : null;
+  // Use test_runs.started_at — same source as trend chart
+  const lastRunAt = runs.length > 0 ? runs[runs.length - 1].started_at : null;
 
   const activeDomains = (domains || []).filter(d => d.active !== false);
   const allScores = Object.values(scoreMap);
@@ -99,21 +121,41 @@ async function getStats() {
     count: allScores.filter(s => s >= b.min && s < b.max).length,
   }));
 
-  // ── Trend data — pre-aggregated by Supabase RPC ────────────────────────────
-  const trend_daily   = allTrend
-    .filter(r => r.period_type === "daily")
-    .sort((a, b) => a.period_key.localeCompare(b.period_key))
-    .map(r => ({ day:   r.period_key, avg_score: r.avg_score, count: r.run_count }));
+  // ── Trend data (daily / weekly / monthly) ─────────────────────────────────
+  const dayMap = {}, weekMap = {}, monthMap = {};
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  const trend_weekly  = allTrend
-    .filter(r => r.period_type === "weekly")
-    .sort((a, b) => a.period_key.localeCompare(b.period_key))
-    .map(r => ({ week:  r.period_key, avg_score: r.avg_score, count: r.run_count }));
+  runs.forEach(r => {
+    const d = new Date(r.started_at);
+    if (r.started_at >= thirtyDaysAgo) {
+      const dk = r.started_at.split("T")[0];
+      if (!dayMap[dk]) dayMap[dk] = [];
+      dayMap[dk].push(r.score);
+    }
+    const monday = new Date(d);
+    monday.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+    const wk = monday.toISOString().split("T")[0];
+    if (!weekMap[wk]) weekMap[wk] = [];
+    weekMap[wk].push(r.score);
+    const mk = r.started_at.substring(0, 7);
+    if (!monthMap[mk]) monthMap[mk] = [];
+    monthMap[mk].push(r.score);
+  });
 
-  const trend_monthly = allTrend
-    .filter(r => r.period_type === "monthly")
-    .sort((a, b) => a.period_key.localeCompare(b.period_key))
-    .map(r => ({ month: r.period_key, avg_score: r.avg_score, count: r.run_count }));
+  const trend_daily = Object.entries(dayMap)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .slice(-30)
+    .map(([day, scores]) => ({ day, avg_score: avg(scores), count: scores.length }));
+
+  const trend_weekly = Object.entries(weekMap)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .slice(-12)
+    .map(([week, scores]) => ({ week, avg_score: avg(scores), count: scores.length }));
+
+  const trend_monthly = Object.entries(monthMap)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .slice(-12)
+    .map(([month, scores]) => ({ month, avg_score: avg(scores), count: scores.length }));
 
   // ── PQC readiness summary ──────────────────────────────────────────────────
   const n = allScores.length;
