@@ -2,11 +2,11 @@ const { supabase } = require("../db/supabase");
 
 async function getStats() {
   const [
-    { data: domains,     error: dErr  },
-    { data: domainTests, error: dtErr },
+    { data: domains,     error: dErr      },
+    { data: domainTests, error: dtErr     },
     { data: indexes },
     { data: diLinks },
-    { data: trendRows },
+    { data: trendRows,   error: trendErr  },
   ] = await Promise.all([
     supabase.from("domains").select("id, country, sector, active"),
     supabase.from("domain_tests").select("domain_id, last_score, last_status, last_run_at"),
@@ -17,6 +17,8 @@ async function getStats() {
 
   if (dErr) throw dErr;
   if (dtErr) throw dtErr;
+  if (trendErr) console.error("[statsService] get_trend_data RPC error:", trendErr.message);
+  else console.log("[statsService] get_trend_data rows:", (trendRows || []).length);
 
   const avg = arr => arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : null;
 
