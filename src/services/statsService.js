@@ -16,7 +16,8 @@ async function getStats() {
       .select("score, started_at")
       .not("score", "is", null)
       .gte("started_at", new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString())
-      .order("started_at", { ascending: true }),
+      .order("started_at", { ascending: true })
+      .limit(100000),
   ]);
 
   if (dErr) throw dErr;
