@@ -1,7 +1,6 @@
 const { supabase } = require("../db/supabase");
 
-// Fetch all test_runs rows via pagination — Supabase PostgREST caps at 1000
-// rows per request regardless of .limit(); .range() paginates correctly.
+// Fetch all test_runs via pagination — PostgREST hard-caps at 1000 rows per request.
 async function fetchAllTestRuns(yearAgo) {
   const PAGE = 1000;
   let offset = 0;
@@ -9,7 +8,7 @@ async function fetchAllTestRuns(yearAgo) {
   for (let page = 0; page < 100; page++) {
     const { data, error } = await supabase
       .from("test_runs")
-      .select("score, started_at")
+      .select("score, started_at, domain_test_id")
       .not("score", "is", null)
       .gte("started_at", yearAgo)
       .order("started_at", { ascending: true })
@@ -34,7 +33,7 @@ async function getStats() {
     runs,
   ] = await Promise.all([
     supabase.from("domains").select("id, country, sector, active"),
-    supabase.from("domain_tests").select("domain_id, last_score, last_status, last_run_at"),
+    supabase.from("domain_tests").select("id, domain_id, last_score, last_status, last_run_at"),
     supabase.from("indexes").select("id, key, name"),
     supabase.from("domain_indexes").select("domain_id, index_id"),
     fetchAllTestRuns(yearAgo),
@@ -42,8 +41,6 @@ async function getStats() {
 
   if (dErr) throw dErr;
   if (dtErr) throw dtErr;
-
-  console.log("[statsService] test_runs fetched:", runs.length);
 
   const avg = arr => arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : null;
 
@@ -62,6 +59,42 @@ async function getStats() {
 
   const activeDomains = (domains || []).filter(d => d.active !== false);
   const allScores = Object.values(scoreMap);
+
+  // ── Delta (today vs yesterday) by country and sector ──────────────────────
+  const todayUTC     = new Date().toISOString().split("T")[0];
+  const yesterdayUTC = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+
+  // Build lookup maps for delta computation
+  const dtToDomainId = {};
+  (domainTests || []).forEach(dt => { dtToDomainId[dt.id] = dt.domain_id; });
+
+  const domainMeta = {};
+  (domains || []).forEach(d => { domainMeta[d.id] = { country: d.country, sector: d.sector }; });
+
+  const countryDayScores = {}, sectorDayScores = {};
+  runs.forEach(r => {
+    const day = r.started_at.split("T")[0];
+    if (day !== todayUTC && day !== yesterdayUTC) return;
+    const domainId = dtToDomainId[r.domain_test_id];
+    if (!domainId) return;
+    const meta = domainMeta[domainId];
+    if (!meta) return;
+
+    [["country", countryDayScores], ["sector", sectorDayScores]].forEach(([key, map]) => {
+      const val = meta[key];
+      if (!val) return;
+      if (!map[val]) map[val] = { today: [], yesterday: [] };
+      if (day === todayUTC) map[val].today.push(r.score);
+      else map[val].yesterday.push(r.score);
+    });
+  });
+
+  const delta1d = (map, val) => {
+    const d = map[val];
+    if (!d) return null;
+    const t = avg(d.today), y = avg(d.yesterday);
+    return t !== null && y !== null ? t - y : null;
+  };
 
   // ── Aggregation helper ─────────────────────────────────────────────────────
   function aggregate(key, list) {
@@ -173,8 +206,12 @@ async function getStats() {
     pqc_partial: { count: pqc_partial_count, pct: n ? Math.round(pqc_partial_count / n * 100) : 0 },
     pqc_legacy:  { count: pqc_legacy_count,  pct: n ? Math.round(pqc_legacy_count  / n * 100) : 0 },
     by_index,
-    by_country: aggregate("country", activeDomains).sort((a, b) => b.count - a.count),
-    by_sector:  aggregate("sector",  activeDomains).sort((a, b) => (b.avg_score ?? -1) - (a.avg_score ?? -1)),
+    by_country: aggregate("country", activeDomains)
+      .map(r => ({ ...r, delta_1d: delta1d(countryDayScores, r.country) }))
+      .sort((a, b) => b.count - a.count),
+    by_sector: aggregate("sector", activeDomains)
+      .map(r => ({ ...r, delta_1d: delta1d(sectorDayScores, r.sector) }))
+      .sort((a, b) => (b.avg_score ?? -1) - (a.avg_score ?? -1)),
     score_distribution,
     trend_daily,
     trend_weekly,
