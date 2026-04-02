@@ -6,18 +6,13 @@ async function getStats() {
     { data: domainTests, error: dtErr },
     { data: indexes },
     { data: diLinks },
-    { data: runs },
+    { data: trendRows },
   ] = await Promise.all([
     supabase.from("domains").select("id, country, sector, active"),
     supabase.from("domain_tests").select("domain_id, last_score, last_status, last_run_at"),
     supabase.from("indexes").select("id, key, name"),
     supabase.from("domain_indexes").select("domain_id, index_id"),
-    supabase.from("test_runs")
-      .select("score, started_at")
-      .not("score", "is", null)
-      .gte("started_at", new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString())
-      .order("started_at", { ascending: true })
-      .limit(100000),
+    supabase.rpc("get_trend_data"),
   ]);
 
   if (dErr) throw dErr;
@@ -35,8 +30,11 @@ async function getStats() {
     }
   });
 
-  // Use test_runs.started_at — same source as trend chart, avoids started/finished date mismatch
-  const lastRunAt = (runs || []).length > 0 ? runs[runs.length - 1].started_at : null;
+  // last_scan_at: most recent started_at across all trend rows
+  const allTrend = trendRows || [];
+  const lastRunAt = allTrend.length > 0
+    ? allTrend.reduce((max, r) => r.last_started_at > max ? r.last_started_at : max, "")
+    : null;
 
   const activeDomains = (domains || []).filter(d => d.active !== false);
   const allScores = Object.values(scoreMap);
@@ -88,7 +86,7 @@ async function getStats() {
     pct_ready: scores.length ? Math.round(scores.filter(s => s >= 80).length / scores.length * 100) : 0,
   })).sort((a, b) => (b.avg_score ?? -1) - (a.avg_score ?? -1));
 
-  // ── Score distribution (3 semantic tiers, aligned with pqc_ready/partial/legacy) ──
+  // ── Score distribution ─────────────────────────────────────────────────────
   const score_distribution = [
     { label: "Legacy",        key: "legacy",        min: 0,  max: 40  },
     { label: "Transitioning", key: "transitioning", min: 40, max: 80  },
@@ -99,44 +97,21 @@ async function getStats() {
     count: allScores.filter(s => s >= b.min && s < b.max).length,
   }));
 
-  // ── Trend data (daily / weekly / monthly) ─────────────────────────────────
-  const dayMap = {}, weekMap = {}, monthMap = {};
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  // ── Trend data — pre-aggregated by Supabase RPC ────────────────────────────
+  const trend_daily   = allTrend
+    .filter(r => r.period_type === "daily")
+    .sort((a, b) => a.period_key.localeCompare(b.period_key))
+    .map(r => ({ day:   r.period_key, avg_score: r.avg_score, count: r.run_count }));
 
-  (runs || []).forEach(r => {
-    const d = new Date(r.started_at);
-    // daily (last 30 days only)
-    if (r.started_at >= thirtyDaysAgo) {
-      const dk = r.started_at.split("T")[0];
-      if (!dayMap[dk]) dayMap[dk] = [];
-      dayMap[dk].push(r.score);
-    }
-    // weekly (ISO week, keyed by monday)
-    const monday = new Date(d);
-    monday.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
-    const wk = monday.toISOString().split("T")[0];
-    if (!weekMap[wk]) weekMap[wk] = [];
-    weekMap[wk].push(r.score);
-    // monthly
-    const mk = r.started_at.substring(0, 7);
-    if (!monthMap[mk]) monthMap[mk] = [];
-    monthMap[mk].push(r.score);
-  });
+  const trend_weekly  = allTrend
+    .filter(r => r.period_type === "weekly")
+    .sort((a, b) => a.period_key.localeCompare(b.period_key))
+    .map(r => ({ week:  r.period_key, avg_score: r.avg_score, count: r.run_count }));
 
-  const trend_daily = Object.entries(dayMap)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .slice(-30)
-    .map(([day, scores]) => ({ day, avg_score: avg(scores), count: scores.length }));
-
-  const trend_weekly = Object.entries(weekMap)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .slice(-12)
-    .map(([week, scores]) => ({ week, avg_score: avg(scores), count: scores.length }));
-
-  const trend_monthly = Object.entries(monthMap)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .slice(-12)
-    .map(([month, scores]) => ({ month, avg_score: avg(scores), count: scores.length }));
+  const trend_monthly = allTrend
+    .filter(r => r.period_type === "monthly")
+    .sort((a, b) => a.period_key.localeCompare(b.period_key))
+    .map(r => ({ month: r.period_key, avg_score: r.avg_score, count: r.run_count }));
 
   // ── PQC readiness summary ──────────────────────────────────────────────────
   const n = allScores.length;
