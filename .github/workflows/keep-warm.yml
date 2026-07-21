@@ -1,0 +1,25 @@
+name: keep-warm
+
+# Pings the Railway backend so it doesn't go to sleep and cause cold-start
+# delays on the frontend. GitHub's cron minimum is 5 minutes; within each run
+# we ping a few times spaced out to bridge the gap between scheduled runs.
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Ping /health
+        env:
+          URL: https://pqc-readiness-tracker-production.up.railway.app/health
+        run: |
+          for i in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$URL" || echo "000")
+            echo "ping $i -> HTTP $code"
+            if [ "$i" -lt 5 ]; then sleep 55; fi
+          done
