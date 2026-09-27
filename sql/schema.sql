@@ -83,6 +83,9 @@ create index if not exists idx_domain_tests_test_type_id on public.domain_tests(
 create index if not exists idx_domain_tests_next_run_at on public.domain_tests(next_run_at);
 create index if not exists idx_test_runs_domain_test_id on public.test_runs(domain_test_id);
 create index if not exists idx_test_runs_created_at on public.test_runs(created_at desc);
+-- /stats filters + orders test_runs by started_at; without this index the query
+-- does a full scan + sort per page and hits Postgres' statement timeout.
+create index if not exists idx_test_runs_started_at on public.test_runs(started_at);
 create index if not exists idx_reports_scope on public.reports(scope_type, scope_id);
 
 drop trigger if exists set_domains_updated_at on public.domains;
