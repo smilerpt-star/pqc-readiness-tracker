@@ -1,49 +1,38 @@
 const { supabase } = require("../db/supabase");
 
-// Fetch all test_runs via pagination — PostgREST hard-caps at 1000 rows per request.
-// Uses keyset pagination on started_at (indexed) instead of OFFSET: OFFSET makes
-// deep pages O(n²) — page N re-skips N*PAGE rows each time — which is what pushed
-// this query past Postgres' statement timeout. Keyset stays linear via the index.
-async function fetchAllTestRuns(yearAgo) {
-  const PAGE = 1000;
-  const all = [];
-  let cursor = yearAgo; // exclusive lower bound, advanced past the last row each page
-  for (let page = 0; page < 2000; page++) {
-    const { data, error } = await supabase
-      .from("test_runs")
-      .select("score, started_at, domain_test_id")
-      .not("score", "is", null)
-      .gt("started_at", cursor)
-      .order("started_at", { ascending: true })
-      .limit(PAGE);
-    if (error) throw error;
-    if (!data?.length) break;
-    all.push(...data);
-    if (data.length < PAGE) break;
-    cursor = data[data.length - 1].started_at;
-  }
-  return all;
-}
-
 async function getStats() {
-  const yearAgo = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
-
+  // Small, cheap queries stay client-side; the heavy per-run aggregation is done
+  // in Postgres via RPC (see sql/stats_functions.sql) instead of shipping a full
+  // year of test_runs into Node.
   const [
-    { data: domains,     error: dErr  },
-    { data: domainTests, error: dtErr },
+    { data: domains,      error: dErr  },
+    { data: domainTests,  error: dtErr },
     { data: indexes },
     { data: diLinks },
-    runs,
+    { data: lastRunRow },
+    { data: trendDaily,   error: tdErr },
+    { data: trendWeekly,  error: twErr },
+    { data: trendMonthly, error: tmErr },
+    { data: deltaRows,    error: deErr },
   ] = await Promise.all([
     supabase.from("domains").select("id, country, sector, active"),
     supabase.from("domain_tests").select("id, domain_id, last_score, last_status, last_run_at"),
     supabase.from("indexes").select("id, key, name"),
     supabase.from("domain_indexes").select("domain_id, index_id"),
-    fetchAllTestRuns(yearAgo),
+    supabase.from("test_runs").select("started_at").not("score", "is", null)
+      .order("started_at", { ascending: false }).limit(1).maybeSingle(),
+    supabase.rpc("stats_trend_daily"),
+    supabase.rpc("stats_trend_weekly"),
+    supabase.rpc("stats_trend_monthly"),
+    supabase.rpc("stats_delta_1d"),
   ]);
 
-  if (dErr) throw dErr;
+  if (dErr)  throw dErr;
   if (dtErr) throw dtErr;
+  if (tdErr) throw tdErr;
+  if (twErr) throw twErr;
+  if (tmErr) throw tmErr;
+  if (deErr) throw deErr;
 
   const avg = arr => arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : null;
 
@@ -57,47 +46,19 @@ async function getStats() {
     }
   });
 
-  // Use test_runs.started_at — same source as trend chart
-  const lastRunAt = runs.length > 0 ? runs[runs.length - 1].started_at : null;
+  const lastRunAt = lastRunRow?.started_at ?? null;
 
   const activeDomains = (domains || []).filter(d => d.active !== false);
   const allScores = Object.values(scoreMap);
 
-  // ── Delta (today vs yesterday) by country and sector ──────────────────────
-  const todayUTC     = new Date().toISOString().split("T")[0];
-  const yesterdayUTC = new Date(Date.now() - 86400000).toISOString().split("T")[0];
-
-  // Build lookup maps for delta computation
-  const dtToDomainId = {};
-  (domainTests || []).forEach(dt => { dtToDomainId[dt.id] = dt.domain_id; });
-
-  const domainMeta = {};
-  (domains || []).forEach(d => { domainMeta[d.id] = { country: d.country, sector: d.sector }; });
-
-  const countryDayScores = {}, sectorDayScores = {};
-  runs.forEach(r => {
-    const day = r.started_at.split("T")[0];
-    if (day !== todayUTC && day !== yesterdayUTC) return;
-    const domainId = dtToDomainId[r.domain_test_id];
-    if (!domainId) return;
-    const meta = domainMeta[domainId];
-    if (!meta) return;
-
-    [["country", countryDayScores], ["sector", sectorDayScores]].forEach(([key, map]) => {
-      const val = meta[key];
-      if (!val) return;
-      if (!map[val]) map[val] = { today: [], yesterday: [] };
-      if (day === todayUTC) map[val].today.push(r.score);
-      else map[val].yesterday.push(r.score);
-    });
+  // ── Delta (today vs yesterday) by country and sector — from stats_delta_1d ──
+  const deltaMap = { country: {}, sector: {} };
+  (deltaRows || []).forEach(r => {
+    const d = (r.today_avg !== null && r.yesterday_avg !== null) ? r.today_avg - r.yesterday_avg : null;
+    if (deltaMap[r.dimension]) deltaMap[r.dimension][r.label] = d;
   });
-
-  const delta1d = (map, val) => {
-    const d = map[val];
-    if (!d) return null;
-    const t = avg(d.today), y = avg(d.yesterday);
-    return t !== null && y !== null ? t - y : null;
-  };
+  const delta1d = (dim, label) =>
+    (deltaMap[dim] && label in deltaMap[dim]) ? deltaMap[dim][label] : null;
 
   // ── Aggregation helper ─────────────────────────────────────────────────────
   function aggregate(key, list) {
@@ -157,41 +118,16 @@ async function getStats() {
     count: allScores.filter(s => s >= b.min && s < b.max).length,
   }));
 
-  // ── Trend data (daily / weekly / monthly) ─────────────────────────────────
-  const dayMap = {}, weekMap = {}, monthMap = {};
-  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-
-  runs.forEach(r => {
-    const d = new Date(r.started_at);
-    if (r.started_at >= thirtyDaysAgo) {
-      const dk = r.started_at.split("T")[0];
-      if (!dayMap[dk]) dayMap[dk] = [];
-      dayMap[dk].push(r.score);
-    }
-    const monday = new Date(d);
-    monday.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
-    const wk = monday.toISOString().split("T")[0];
-    if (!weekMap[wk]) weekMap[wk] = [];
-    weekMap[wk].push(r.score);
-    const mk = r.started_at.substring(0, 7);
-    if (!monthMap[mk]) monthMap[mk] = [];
-    monthMap[mk].push(r.score);
-  });
-
-  const trend_daily = Object.entries(dayMap)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .slice(-30)
-    .map(([day, scores]) => ({ day, avg_score: avg(scores), count: scores.length }));
-
-  const trend_weekly = Object.entries(weekMap)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .slice(-12)
-    .map(([week, scores]) => ({ week, avg_score: avg(scores), count: scores.length }));
-
-  const trend_monthly = Object.entries(monthMap)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .slice(-12)
-    .map(([month, scores]) => ({ month, avg_score: avg(scores), count: scores.length }));
+  // ── Trend data (daily / weekly / monthly) — from stats_trend_* RPCs ─────────
+  const trend_daily = (trendDaily || []).map(r => ({
+    day: r.day, avg_score: r.avg_score, count: r.count,
+  }));
+  const trend_weekly = (trendWeekly || []).map(r => ({
+    week: r.week, avg_score: r.avg_score, count: r.count,
+  }));
+  const trend_monthly = (trendMonthly || []).map(r => ({
+    month: r.month, avg_score: r.avg_score, count: r.count,
+  }));
 
   // ── PQC readiness summary ──────────────────────────────────────────────────
   const n = allScores.length;
@@ -210,10 +146,10 @@ async function getStats() {
     pqc_legacy:  { count: pqc_legacy_count,  pct: n ? Math.round(pqc_legacy_count  / n * 100) : 0 },
     by_index,
     by_country: aggregate("country", activeDomains)
-      .map(r => ({ ...r, delta_1d: delta1d(countryDayScores, r.country) }))
+      .map(r => ({ ...r, delta_1d: delta1d("country", r.country) }))
       .sort((a, b) => b.count - a.count),
     by_sector: aggregate("sector", activeDomains)
-      .map(r => ({ ...r, delta_1d: delta1d(sectorDayScores, r.sector) }))
+      .map(r => ({ ...r, delta_1d: delta1d("sector", r.sector) }))
       .sort((a, b) => (b.avg_score ?? -1) - (a.avg_score ?? -1)),
     score_distribution,
     trend_daily,
