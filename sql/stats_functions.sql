@@ -46,7 +46,10 @@ $$;
 create or replace function public.stats_delta_1d()
 returns table(dimension text, label text, today_avg int, yesterday_avg int)
 language sql stable as $$
-  with r2 as (
+  with bounds as (
+    select (now() at time zone 'UTC')::date as today
+  ),
+  r2 as (
     select r.score,
            (r.started_at at time zone 'UTC')::date as day,
            d.country,
@@ -54,11 +57,12 @@ language sql stable as $$
     from public.test_runs r
     join public.domain_tests dt on dt.id = r.domain_test_id
     join public.domains d       on d.id  = dt.domain_id
+    cross join bounds
     where r.score is not null
-      and (r.started_at at time zone 'UTC')::date in (
-        (now() at time zone 'UTC')::date,
-        (now() at time zone 'UTC')::date - 1
-      )
+      -- Sargable range on the raw column so idx_test_runs_started_at is used
+      -- (only ~2 days of rows scanned) instead of a full-table scan.
+      and r.started_at >= ((bounds.today - 1)::timestamp at time zone 'UTC')
+      and r.started_at <  ((bounds.today + 1)::timestamp at time zone 'UTC')
   )
   select 'country' as dimension,
          country   as label,
