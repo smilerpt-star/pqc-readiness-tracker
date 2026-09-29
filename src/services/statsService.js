@@ -1,23 +1,26 @@
 const { supabase } = require("../db/supabase");
 
 // Fetch all test_runs via pagination — PostgREST hard-caps at 1000 rows per request.
+// Uses keyset pagination on started_at (indexed) instead of OFFSET: OFFSET makes
+// deep pages O(n²) — page N re-skips N*PAGE rows each time — which is what pushed
+// this query past Postgres' statement timeout. Keyset stays linear via the index.
 async function fetchAllTestRuns(yearAgo) {
   const PAGE = 1000;
-  let offset = 0;
   const all = [];
-  for (let page = 0; page < 100; page++) {
+  let cursor = yearAgo; // exclusive lower bound, advanced past the last row each page
+  for (let page = 0; page < 2000; page++) {
     const { data, error } = await supabase
       .from("test_runs")
       .select("score, started_at, domain_test_id")
       .not("score", "is", null)
-      .gte("started_at", yearAgo)
+      .gt("started_at", cursor)
       .order("started_at", { ascending: true })
-      .range(offset, offset + PAGE - 1);
+      .limit(PAGE);
     if (error) throw error;
     if (!data?.length) break;
     all.push(...data);
     if (data.length < PAGE) break;
-    offset += PAGE;
+    cursor = data[data.length - 1].started_at;
   }
   return all;
 }
