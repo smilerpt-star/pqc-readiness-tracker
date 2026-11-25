@@ -1,46 +1,55 @@
 const { supabase } = require("../db/supabase");
 
-async function getStats() {
-  // Small, cheap queries stay client-side; the heavy per-run aggregation is done
-  // in Postgres via RPC (see sql/stats_functions.sql) instead of shipping a full
-  // year of test_runs into Node.
-  // TEMP DIAGNOSTIC: time each query individually in production.
-  const timed = (name, q) => {
-    const s = Date.now();
-    return Promise.resolve(q).then(
-      (r) => { console.log(`[stats-timing] ${name}: ${Date.now() - s}ms${r && r.error ? " ERR:" + r.error.message : ""}`); return r; },
-      (e) => { console.log(`[stats-timing] ${name}: ${Date.now() - s}ms THROW:${e.message}`); return { data: null, error: e }; }
-    );
-  };
+// In-memory cache. The heavy trend aggregation runs against a tiny free-tier
+// Postgres; caching keeps /stats instant for users and lets a background pinger
+// (keep-warm) absorb the occasional slow recompute. Stale data is served if a
+// recompute fails, so a transient DB timeout never blanks the dashboard.
+const CACHE_TTL_MS = 10 * 60 * 1000;
+let _cache = { at: 0, data: null };
 
+async function getStats() {
+  if (_cache.data && Date.now() - _cache.at < CACHE_TTL_MS) {
+    return _cache.data;
+  }
+  try {
+    const data = await computeStats();
+    _cache = { at: Date.now(), data };
+    return data;
+  } catch (e) {
+    if (_cache.data) {
+      console.warn(`[stats] recompute failed, serving cached data: ${e.message}`);
+      return _cache.data;
+    }
+    throw e;
+  }
+}
+
+async function computeStats() {
+  // Trends come from a single combined RPC (stats_trends) that scans test_runs
+  // once, instead of three concurrent scans that saturated the free-tier DB and
+  // hit the statement timeout. The remaining queries are small.
   const [
-    { data: domains,      error: dErr  },
-    { data: domainTests,  error: dtErr },
+    { data: domains,     error: dErr  },
+    { data: domainTests, error: dtErr },
     { data: indexes },
     { data: diLinks },
     { data: lastRunRow },
-    { data: trendDaily,   error: tdErr },
-    { data: trendWeekly,  error: twErr },
-    { data: trendMonthly, error: tmErr },
-    { data: deltaRows,    error: deErr },
+    { data: trends,      error: trErr },
+    { data: deltaRows,   error: deErr },
   ] = await Promise.all([
-    timed("domains",        supabase.from("domains").select("id, country, sector, active")),
-    timed("domain_tests",   supabase.from("domain_tests").select("id, domain_id, last_score, last_status, last_run_at")),
-    timed("indexes",        supabase.from("indexes").select("id, key, name")),
-    timed("domain_indexes", supabase.from("domain_indexes").select("domain_id, index_id")),
-    timed("lastRun",        supabase.from("test_runs").select("started_at").not("score", "is", null)
-      .order("started_at", { ascending: false }).limit(1).maybeSingle()),
-    timed("rpc_daily",      supabase.rpc("stats_trend_daily")),
-    timed("rpc_weekly",     supabase.rpc("stats_trend_weekly")),
-    timed("rpc_monthly",    supabase.rpc("stats_trend_monthly")),
-    timed("rpc_delta",      supabase.rpc("stats_delta_1d")),
+    supabase.from("domains").select("id, country, sector, active"),
+    supabase.from("domain_tests").select("id, domain_id, last_score, last_status, last_run_at"),
+    supabase.from("indexes").select("id, key, name"),
+    supabase.from("domain_indexes").select("domain_id, index_id"),
+    supabase.from("test_runs").select("started_at").not("score", "is", null)
+      .order("started_at", { ascending: false }).limit(1).maybeSingle(),
+    supabase.rpc("stats_trends"),
+    supabase.rpc("stats_delta_1d"),
   ]);
 
   if (dErr)  throw dErr;
   if (dtErr) throw dtErr;
-  if (tdErr) throw tdErr;
-  if (twErr) throw twErr;
-  if (tmErr) throw tmErr;
+  if (trErr) throw trErr;
   if (deErr) throw deErr;
 
   const avg = arr => arr.length ? Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) : null;
@@ -127,16 +136,17 @@ async function getStats() {
     count: allScores.filter(s => s >= b.min && s < b.max).length,
   }));
 
-  // ── Trend data (daily / weekly / monthly) — from stats_trend_* RPCs ─────────
-  const trend_daily = (trendDaily || []).map(r => ({
-    day: r.day, avg_score: r.avg_score, count: r.count,
-  }));
-  const trend_weekly = (trendWeekly || []).map(r => ({
-    week: r.week, avg_score: r.avg_score, count: r.count,
-  }));
-  const trend_monthly = (trendMonthly || []).map(r => ({
-    month: r.month, avg_score: r.avg_score, count: r.count,
-  }));
+  // ── Trend data (daily / weekly / monthly) — from the combined stats_trends ──
+  const byBucket = (bucket, keyName, keep) =>
+    (trends || [])
+      .filter(r => r.bucket === bucket)
+      .sort((a, b) => (a.period < b.period ? -1 : a.period > b.period ? 1 : 0))
+      .slice(-keep)
+      .map(r => ({ [keyName]: r.period, avg_score: r.avg_score, count: r.cnt }));
+
+  const trend_daily   = byBucket("daily",   "day",   30);
+  const trend_weekly  = byBucket("weekly",  "week",  12);
+  const trend_monthly = byBucket("monthly", "month", 12);
 
   // ── PQC readiness summary ──────────────────────────────────────────────────
   const n = allScores.length;
