@@ -4,6 +4,15 @@ async function getStats() {
   // Small, cheap queries stay client-side; the heavy per-run aggregation is done
   // in Postgres via RPC (see sql/stats_functions.sql) instead of shipping a full
   // year of test_runs into Node.
+  // TEMP DIAGNOSTIC: time each query individually in production.
+  const timed = (name, q) => {
+    const s = Date.now();
+    return Promise.resolve(q).then(
+      (r) => { console.log(`[stats-timing] ${name}: ${Date.now() - s}ms${r && r.error ? " ERR:" + r.error.message : ""}`); return r; },
+      (e) => { console.log(`[stats-timing] ${name}: ${Date.now() - s}ms THROW:${e.message}`); return { data: null, error: e }; }
+    );
+  };
+
   const [
     { data: domains,      error: dErr  },
     { data: domainTests,  error: dtErr },
@@ -15,16 +24,16 @@ async function getStats() {
     { data: trendMonthly, error: tmErr },
     { data: deltaRows,    error: deErr },
   ] = await Promise.all([
-    supabase.from("domains").select("id, country, sector, active"),
-    supabase.from("domain_tests").select("id, domain_id, last_score, last_status, last_run_at"),
-    supabase.from("indexes").select("id, key, name"),
-    supabase.from("domain_indexes").select("domain_id, index_id"),
-    supabase.from("test_runs").select("started_at").not("score", "is", null)
-      .order("started_at", { ascending: false }).limit(1).maybeSingle(),
-    supabase.rpc("stats_trend_daily"),
-    supabase.rpc("stats_trend_weekly"),
-    supabase.rpc("stats_trend_monthly"),
-    supabase.rpc("stats_delta_1d"),
+    timed("domains",        supabase.from("domains").select("id, country, sector, active")),
+    timed("domain_tests",   supabase.from("domain_tests").select("id, domain_id, last_score, last_status, last_run_at")),
+    timed("indexes",        supabase.from("indexes").select("id, key, name")),
+    timed("domain_indexes", supabase.from("domain_indexes").select("domain_id, index_id")),
+    timed("lastRun",        supabase.from("test_runs").select("started_at").not("score", "is", null)
+      .order("started_at", { ascending: false }).limit(1).maybeSingle()),
+    timed("rpc_daily",      supabase.rpc("stats_trend_daily")),
+    timed("rpc_weekly",     supabase.rpc("stats_trend_weekly")),
+    timed("rpc_monthly",    supabase.rpc("stats_trend_monthly")),
+    timed("rpc_delta",      supabase.rpc("stats_delta_1d")),
   ]);
 
   if (dErr)  throw dErr;
