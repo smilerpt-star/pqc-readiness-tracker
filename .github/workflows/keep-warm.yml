@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
-      - name: Ping /stats
+      - name: Ping /health
         env:
-          # Ping /stats (not /health) so the backend's stats cache is refreshed
-          # in the background, keeping the dashboard instant for real users.
-          URL: https://pqc-readiness-tracker-production.up.railway.app/stats
+          # Anti-sleep ping only. Stats are precomputed into a snapshot by the
+          # scheduler, so there is nothing to warm here.
+          URL: https://pqc-readiness-tracker-production.up.railway.app/health
         run: |
           for i in 1 2 3 4 5; do
             code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$URL" || echo "000")

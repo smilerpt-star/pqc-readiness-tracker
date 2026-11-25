@@ -1,26 +1,56 @@
 const { supabase } = require("../db/supabase");
 
-// In-memory cache. The heavy trend aggregation runs against a tiny free-tier
-// Postgres; caching keeps /stats instant for users and lets a background pinger
-// (keep-warm) absorb the occasional slow recompute. Stale data is served if a
-// recompute fails, so a transient DB timeout never blanks the dashboard.
-const CACHE_TTL_MS = 10 * 60 * 1000;
-let _cache = { at: 0, data: null };
+// /stats is served from a PRECOMPUTED snapshot (stats_cache table), refreshed on
+// a schedule (right after the daily scan) — never computed on a user request.
+// The heavy year-long aggregation against the tiny free-tier DB thus runs ~once
+// a day in the background instead of on every page load. A short in-memory layer
+// avoids even the single-row snapshot read on back-to-back hits.
+const MEM_TTL_MS = 60 * 1000;
+const SNAPSHOT_MAX_AGE_MS = 25 * 60 * 60 * 1000;
+let _mem = { at: 0, data: null };
 
+// Read path: snapshot only. Falls back to a one-off compute if no snapshot
+// exists yet (first boot), so the endpoint is never empty.
 async function getStats() {
-  if (_cache.data && Date.now() - _cache.at < CACHE_TTL_MS) {
-    return _cache.data;
+  if (_mem.data && Date.now() - _mem.at < MEM_TTL_MS) return _mem.data;
+
+  const { data: row, error } = await supabase
+    .from("stats_cache").select("data").eq("id", 1).maybeSingle();
+  if (error) throw error;
+
+  if (row?.data) {
+    _mem = { at: Date.now(), data: row.data };
+    return row.data;
   }
+  return refreshStatsCache(); // bootstrap: no snapshot yet
+}
+
+// Write path: compute the heavy aggregation once and store it. Called by the
+// scheduler after the daily scan, and on startup if the snapshot is stale.
+async function refreshStatsCache() {
+  const start = Date.now();
+  const data = await computeStats();
+  const { error } = await supabase
+    .from("stats_cache")
+    .upsert({ id: 1, data, computed_at: new Date().toISOString() });
+  if (error) throw error;
+  _mem = { at: Date.now(), data };
+  console.log(`[stats] snapshot refreshed in ${Date.now() - start}ms`);
+  return data;
+}
+
+// Refresh only when the stored snapshot is missing or older than maxAgeMs.
+async function ensureFreshSnapshot(maxAgeMs = SNAPSHOT_MAX_AGE_MS) {
   try {
-    const data = await computeStats();
-    _cache = { at: Date.now(), data };
-    return data;
-  } catch (e) {
-    if (_cache.data) {
-      console.warn(`[stats] recompute failed, serving cached data: ${e.message}`);
-      return _cache.data;
+    const { data: row } = await supabase
+      .from("stats_cache").select("computed_at").eq("id", 1).maybeSingle();
+    const age = row?.computed_at ? Date.now() - new Date(row.computed_at).getTime() : Infinity;
+    if (age > maxAgeMs) {
+      console.log("[stats] snapshot missing/stale — refreshing on startup");
+      await refreshStatsCache();
     }
-    throw e;
+  } catch (e) {
+    console.error(`[stats] ensureFreshSnapshot failed: ${e.message}`);
   }
 }
 
@@ -177,4 +207,4 @@ async function computeStats() {
   };
 }
 
-module.exports = { getStats };
+module.exports = { getStats, refreshStatsCache, ensureFreshSnapshot };

@@ -2,6 +2,7 @@ const { getConfig, setConfig } = require("../repositories/configRepository");
 const domainTestRepository = require("../repositories/domainTestRepository");
 const { runDomainTest } = require("./domainTestService");
 const { unwrapResult } = require("./databaseService");
+const statsService = require("./statsService");
 
 const TICK_MS = 60_000; // check every minute
 const CONCURRENCY = 10;
@@ -82,13 +83,19 @@ async function tick() {
   if (now.getUTCHours() > h || (now.getUTCHours() === h && now.getUTCMinutes() >= m)) {
     _lastScanDate = todayUTC;
     setConfig("last_scan_date", todayUTC).catch(console.error);
-    runAll("scheduled").catch(console.error);
+    // Recompute the stats snapshot right after the daily scan finishes.
+    runAll("scheduled")
+      .then(() => statsService.refreshStatsCache())
+      .catch(console.error);
   }
 }
 
 function start() {
   tick();
   setInterval(tick, TICK_MS);
+  // Populate the stats snapshot now if it's missing or stale, so /stats is
+  // served fast immediately after a deploy without waiting for the daily scan.
+  statsService.ensureFreshSnapshot().catch(() => {});
 }
 
 module.exports = { start, runAll, isRunning, getLastRunStats };
