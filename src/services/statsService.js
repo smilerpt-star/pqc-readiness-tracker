@@ -164,6 +164,23 @@ async function computeStats() {
     pct_ready: scores.length ? Math.round(scores.filter(s => s >= 80).length / scores.length * 100) : 0,
   })).sort((a, b) => (b.avg_score ?? -1) - (a.avg_score ?? -1));
 
+  // "Other": monitored organisations that are not (or no longer) in any tracked
+  // index — former constituents and approved community submissions. Listed last.
+  const otherScores = activeDomains
+    .filter(d => !(domainIndexMap[d.id] || []).length)
+    .map(d => scoreMap[d.id])
+    .filter(sc => sc !== undefined);
+  const otherCount = activeDomains.filter(d => !(domainIndexMap[d.id] || []).length).length;
+  if (otherCount > 0) {
+    by_index.push({
+      index: "Other", key: "other", count: otherCount,
+      avg_score: avg(otherScores),
+      scored: otherScores.length,
+      pqc_ready: otherScores.filter(sc => sc >= 80).length,
+      pct_ready: otherScores.length ? Math.round(otherScores.filter(sc => sc >= 80).length / otherScores.length * 100) : 0,
+    });
+  }
+
   // ── Score distribution ─────────────────────────────────────────────────────
   const score_distribution = [
     { label: "Legacy",        key: "legacy",        min: 0,  max: 40  },
