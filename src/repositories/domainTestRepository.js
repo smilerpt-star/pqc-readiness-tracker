@@ -1,4 +1,4 @@
-const { supabase } = require("../db/supabase");
+const { supabase, selectAll } = require("../db/supabase");
 
 const domainTestSelect = `
   *,
@@ -7,10 +7,11 @@ const domainTestSelect = `
 `;
 
 async function listDomainTests() {
-  return supabase
+  return selectAll(() => supabase
     .from("domain_tests")
     .select(domainTestSelect)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .order("id"));
 }
 
 async function createDomainTest(payload) {
@@ -35,11 +36,12 @@ async function findDueDomainTests() {
 }
 
 async function findAllActiveDomainTests() {
-  return supabase
+  return selectAll(() => supabase
     .from("domain_tests")
     .select("id, domain_id, test_type_id, domain:domains!inner(id, active)")
     .eq("active", true)
-    .eq("domain.active", true);
+    .eq("domain.active", true)
+    .order("id"));
 }
 
 module.exports = {

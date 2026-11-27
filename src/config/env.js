@@ -13,7 +13,7 @@ function requireEnv(name) {
 }
 
 if (!process.env.ADMIN_TOKEN) {
-  console.warn("[auth] ADMIN_TOKEN not set — admin routes are unprotected");
+  console.warn("[auth] ADMIN_TOKEN not set — admin routes are disabled (requests get 503)");
 }
 
 const env = {

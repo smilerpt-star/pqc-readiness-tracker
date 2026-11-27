@@ -1,4 +1,4 @@
-const { supabase } = require("../db/supabase");
+const { supabase, selectAll } = require("../db/supabase");
 
 // /stats is served from a PRECOMPUTED snapshot (stats_cache table), refreshed on
 // a schedule (right after the daily scan) — never computed on a user request.
@@ -7,6 +7,9 @@ const { supabase } = require("../db/supabase");
 // avoids even the single-row snapshot read on back-to-back hits.
 const MEM_TTL_MS = 60 * 1000;
 const SNAPSHOT_MAX_AGE_MS = 25 * 60 * 60 * 1000;
+// Bump when the snapshot shape/meaning changes; stale versions are recomputed on boot.
+// v2: paginated reads (previous snapshots could be truncated at 1000 rows) + "Other".
+const SNAPSHOT_VERSION = 2;
 let _mem = { at: 0, data: null };
 
 // Read path: snapshot only. Falls back to a one-off compute if no snapshot
@@ -43,9 +46,9 @@ async function refreshStatsCache() {
 async function ensureFreshSnapshot(maxAgeMs = SNAPSHOT_MAX_AGE_MS) {
   try {
     const { data: row } = await supabase
-      .from("stats_cache").select("computed_at").eq("id", 1).maybeSingle();
+      .from("stats_cache").select("computed_at, version:data->snapshot_version").eq("id", 1).maybeSingle();
     const age = row?.computed_at ? Date.now() - new Date(row.computed_at).getTime() : Infinity;
-    if (age > maxAgeMs) {
+    if (age > maxAgeMs || Number(row?.version) !== SNAPSHOT_VERSION) {
       console.log("[stats] snapshot missing/stale — refreshing on startup");
       await refreshStatsCache();
     }
@@ -67,10 +70,10 @@ async function computeStats() {
     { data: trends,      error: trErr },
     { data: deltaRows,   error: deErr },
   ] = await Promise.all([
-    supabase.from("domains").select("id, country, sector, active"),
-    supabase.from("domain_tests").select("id, domain_id, last_score, last_status, last_run_at"),
-    supabase.from("indexes").select("id, key, name"),
-    supabase.from("domain_indexes").select("domain_id, index_id"),
+    selectAll(() => supabase.from("domains").select("id, country, sector, active").order("id")),
+    selectAll(() => supabase.from("domain_tests").select("id, domain_id, last_score, last_status, last_run_at").order("id")),
+    selectAll(() => supabase.from("indexes").select("id, key, name").order("id")),
+    selectAll(() => supabase.from("domain_indexes").select("domain_id, index_id").order("id")),
     supabase.from("test_runs").select("started_at").not("score", "is", null)
       .order("started_at", { ascending: false }).limit(1).maybeSingle(),
     supabase.rpc("stats_trends"),
@@ -211,6 +214,7 @@ async function computeStats() {
   const pqc_legacy_count  = allScores.filter(s => s < 40).length;
 
   return {
+    snapshot_version: SNAPSHOT_VERSION,
     total_domains:  (domains || []).length,
     active_domains: activeDomains.length,
     total_scored:   n,

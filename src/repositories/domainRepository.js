@@ -1,7 +1,8 @@
-const { supabase } = require("../db/supabase");
+const { supabase, selectAll } = require("../db/supabase");
 
 async function listDomains() {
-  return supabase.from("domains").select("*").order("created_at", { ascending: false });
+  return selectAll(() => supabase.from("domains").select("*")
+    .order("created_at", { ascending: false }).order("id"));
 }
 
 async function createDomain(payload) {
