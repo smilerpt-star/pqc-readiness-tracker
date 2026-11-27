@@ -1,0 +1,36 @@
+rank,domain,company_name,country,sector,index,match,qid
+1,grupoacs.com,"ACS Group","Spain","Other","IBEX 35",domain,Q1550888
+2,acerinox.com,"Acerinox","Spain","Materials & Chemicals","IBEX 35",domain,Q1419453
+3,amadeus.com,"Amadeus IT Group","Spain","Other","IBEX 35",new,Q696061
+4,acciona.com,"Acciona","Spain","Other","IBEX 35",domain,Q339142
+5,acciona-energia.com,"Acciona Energía","Spain","Energy & Utilities","IBEX 35",domain,Q11919256
+6,bbva.com,"Banco Bilbao Vizcaya Argentaria","Spain","Banking & Finance","IBEX 35",domain,Q806189
+7,bankinter.com,"Bankinter","Spain","Banking & Finance","IBEX 35",domain,Q806808
+8,caixabank.es,"CaixaBank","Spain","Banking & Finance","IBEX 35",domain,Q847225
+9,cellnex.com,"Cellnex Telecom","Spain","Telecommunications","IBEX 35",new,Q21081923
+10,inmocolonial.com,"Inmobiliaria Colonial","Spain","Real Estate & Infrastructure","IBEX 35",new,Q509062
+11,aena.es,"Aena","Spain","Other","IBEX 35",name,Q291464
+12,endesa.com,"Endesa","Spain","Energy & Utilities","IBEX 35",new,Q1275336
+13,enagas.com,"Enagás","Spain","Energy & Utilities","IBEX 35",name,Q1124060
+14,fluidra.com,"Fluidra","Spain","Other","IBEX 35",new,Q11922225
+15,ferrovial.com,"Ferrovial","Netherlands","Other","IBEX 35",domain,Q1408037
+16,grifols.com,"Grifols","Spain","Healthcare","IBEX 35",domain,Q901262
+17,iairgroup.com,"International Airlines Group","Spain","Other","IBEX 35",domain,Q8774
+18,iberdrola.com,"Iberdrola","Spain","Energy & Utilities","IBEX 35",domain,Q1437502
+19,indragroup.com,"Indra","Spain","Technology","IBEX 35",new,Q1661823
+20,inditex.com,"Inditex","Spain","Other","IBEX 35",domain,Q44504
+21,grupologista.com,"Logista","Spain","Transportation & Logistics","IBEX 35",new,Q28226300
+22,mapfre.com,"Mapfre","Spain","Insurance","IBEX 35",new,Q544532
+23,merlinproperties.com,"Merlin Properties","Spain","Real Estate & Infrastructure","IBEX 35",domain,Q28226309
+24,corporate.arcelormittal.com,"ArcelorMittal","Luxembourg","Materials & Chemicals","IBEX 35",domain,Q27893
+25,naturgy.com,"Naturgy","Spain","Energy & Utilities","IBEX 35",domain,Q474690
+26,puig.com,"Puig","Spain","Other","IBEX 35",new,Q3410623
+27,redeia.com,"Redeia","Spain","Energy & Utilities","IBEX 35",domain,Q1551220
+28,repsol.com,"Repsol","Spain","Energy & Utilities","IBEX 35",domain,Q174747
+29,rovi.es,"Laboratorios Rovi","Spain","Healthcare","IBEX 35",new,Q65180652
+30,bancsabadell.com,"Banco Sabadell","Spain","Banking & Finance","IBEX 35",domain,Q762330
+31,santander.com,"Banco Santander","Spain","Banking & Finance","IBEX 35",domain,Q6496310
+32,sacyr.com,"Sacyr","Spain","Real Estate & Infrastructure","IBEX 35",new,Q525955
+33,,"Solaria",,"Energy & Utilities","IBEX 35",missing,
+34,telefonica.com,"Telefónica","Spain","Telecommunications","IBEX 35",domain,Q160229
+35,fundacionunicaja.com,"Unicaja","Spain","Banking & Finance","IBEX 35",new,Q2543704

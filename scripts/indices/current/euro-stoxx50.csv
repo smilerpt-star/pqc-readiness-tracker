@@ -1,0 +1,51 @@
+rank,domain,company_name,country,sector,index,match,qid
+1,adidas-group.com,"Adidas","Germany","Retail & Consumer","Euro Stoxx 50",name,Q3895
+2,adyen.com,"Adyen","Netherlands","Transportation & Logistics","Euro Stoxx 50",domain,Q4686934
+3,aholddelhaize.com,"Ahold Delhaize","Netherlands","Retail & Consumer","Euro Stoxx 50",new,Q20539261
+4,airliquide.ca,"Air Liquide","France","Materials & Chemicals","Euro Stoxx 50",domain,Q407448
+5,airbus.com,"Airbus","France","Transportation & Logistics","Euro Stoxx 50",domain,Q2311
+6,allianz.com,"Allianz","Germany","Insurance","Euro Stoxx 50",domain,Q487292
+7,ab-inbev.com,"Anheuser-Busch InBev","Belgium","Retail & Consumer","Euro Stoxx 50",domain,Q128738
+8,argenx.com,"Argenx","Netherlands","Healthcare","Euro Stoxx 50",domain,Q63152908
+9,asml.com,"ASML Holding","Netherlands","Technology","Euro Stoxx 50",domain,Q297879
+10,axa.com,"AXA","France","Insurance","Euro Stoxx 50",domain,Q160054
+11,basf.com,"BASF","Germany","Materials & Chemicals","Euro Stoxx 50",domain,Q9401
+12,bayer.com,"Bayer","Germany","Healthcare","Euro Stoxx 50",domain,Q152051
+13,bbva.com,"Banco Bilbao Vizcaya Argentaria","Spain","Banking & Finance","Euro Stoxx 50",domain,Q806189
+14,santander.com,"Banco Santander","Spain","Banking & Finance","Euro Stoxx 50",domain,Q6496310
+15,bmw.com,"BMW","Germany","Other","Euro Stoxx 50",domain,Q26678
+16,group.bnpparibas,"BNP Paribas","France","Banking & Finance","Euro Stoxx 50",domain,Q499707
+17,danone.com,"Danone","France","Retail & Consumer","Euro Stoxx 50",domain,Q329426
+18,db.com,"Deutsche Bank","Germany","Banking & Finance","Euro Stoxx 50",new,Q66048
+19,deutsche-boerse.com,"Deutsche Börse","Germany","Banking & Finance","Euro Stoxx 50",domain,Q157852
+20,deutschepost.com,"Deutsche Post","Germany","Industrials","Euro Stoxx 50",new,Q5266289
+21,telekom.com,"Deutsche Telekom","Germany","Telecommunications","Euro Stoxx 50",domain,Q9396
+22,enel.com,"Enel","Italy","Energy & Utilities","Euro Stoxx 50",domain,Q651222
+23,agence.engie-homeservices.fr,"Engie","France","Energy & Utilities","Euro Stoxx 50",domain,Q13416787
+24,eni.com,"Eni","Italy","Energy & Utilities","Euro Stoxx 50",domain,Q565594
+25,essilorluxottica.com,"EssilorLuxottica","France","Healthcare","Euro Stoxx 50",domain,Q56853086
+26,ferrari.com,"Ferrari","Italy","Other","Euro Stoxx 50",domain,Q27586
+27,hermes.com,"Hermès","France","Retail & Consumer","Euro Stoxx 50",domain,Q843887
+28,iberdrola.com,"Iberdrola","Spain","Energy & Utilities","Euro Stoxx 50",domain,Q1437502
+29,inditex.com,"Inditex","Spain","Other","Euro Stoxx 50",domain,Q44504
+30,infineon.com,"Infineon Technologies","Germany","Technology","Euro Stoxx 50",domain,Q311394
+31,ing.com,"ING Group","Netherlands","Banking & Finance","Euro Stoxx 50",domain,Q645708
+32,intesasanpaolo.com,"Intesa Sanpaolo","Italy","Banking & Finance","Euro Stoxx 50",domain,Q1343118
+33,loreal.com,"L'Oréal","France","Retail & Consumer","Euro Stoxx 50",domain,Q156077
+34,lvmh.com,"LVMH","France","Retail & Consumer","Euro Stoxx 50",domain,Q504998
+35,group.mercedes-benz.com,"Mercedes-Benz Group","Germany","Other","Euro Stoxx 50",domain,Q27530
+36,munichre.com,"Munich Re","Germany","Insurance","Euro Stoxx 50",domain,Q166637
+37,nokia.com,"Nokia","Finland","Technology","Euro Stoxx 50",domain,Q1418
+38,nordea.com,"Nordea","Finland","Banking & Finance","Euro Stoxx 50",domain,Q1123823
+39,prosus.com,"Prosus","Netherlands","Retail & Consumer","Euro Stoxx 50",new,Q67389109
+40,rheinmetall.com,"Rheinmetall","Germany","Transportation & Logistics","Euro Stoxx 50",domain,Q161544
+41,safran-group.com,"Safran","France","Transportation & Logistics","Euro Stoxx 50",domain,Q1886126
+42,saint-gobain.com,"Saint-Gobain","France","Other","Euro Stoxx 50",domain,Q678565
+43,sanofi.com,"Sanofi","France","Healthcare","Euro Stoxx 50",domain,Q158205
+44,sap.com,"SAP","Germany","Technology","Euro Stoxx 50",domain,Q552581
+45,se.com,"Schneider Electric","France","Transportation & Logistics","Euro Stoxx 50",domain,Q49053
+46,siemens.com,"Siemens","Germany","Transportation & Logistics","Euro Stoxx 50",domain,Q81230
+47,siemens-energy.com,"Siemens Energy","Germany","Industrials","Euro Stoxx 50",new,Q89189545
+48,totalenergies.com,"TotalEnergies","France","Energy & Utilities","Euro Stoxx 50",domain,Q154037
+49,vinci.com,"Vinci SA","France","Other","Euro Stoxx 50",domain,Q1475312
+50,unicreditgroup.eu,"UniCredit","Italy","Banking & Finance","Euro Stoxx 50",domain,Q45568

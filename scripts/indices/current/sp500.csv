@@ -1,0 +1,500 @@
+rank,domain,company_name,country,sector,index,match,qid
+1,3m.com,"3M","United States","Energy & Utilities","S&P 500",domain,Q159433
+2,aosmith.com,"A. O. Smith","United States","Other","S&P 500",domain,Q4648219
+3,abbott.com,"Abbott Laboratories","United States","Technology","S&P 500",domain,Q306764
+4,abbvie.com,"AbbVie","United States","Healthcare","S&P 500",domain,Q14662364
+5,accenture.com,"Accenture","Ireland","Technology","S&P 500",domain,Q338825
+6,adobe.com,"Adobe","United States","Technology","S&P 500",domain,Q11463
+7,amd.com,"AMD","United States","Technology","S&P 500",domain,Q128896
+8,aes.com,"AES Corporation","United States","Other","S&P 500",domain,Q291508
+9,aflac.com,"Aflac","United States","Other","S&P 500",domain,Q26311
+10,agilent.com,"Agilent Technologies","United States","Other","S&P 500",domain,Q393762
+11,airproducts.com,"Air Products & Chemicals","United States","Other","S&P 500",domain,Q407744
+12,airbnb.com,"Airbnb","United States","Retail & Consumer","S&P 500",new,Q63327
+13,akamai.com,"Akamai Technologies","United States","Other","S&P 500",domain,Q415598
+14,albemarle.com,"Albemarle Corporation","United States","Materials & Chemicals","S&P 500",domain,Q127074
+15,are.com,"Alexandria Real Estate Equities","United States","Banking & Finance","S&P 500",domain,Q48739877
+16,aligntech.com,"Align Technology","United States","Other","S&P 500",domain,Q30272258
+17,allegion.com,"Allegion","Ireland","Other","S&P 500",domain,Q16738121
+18,alliantenergy.com,"Alliant Energy","United States","Other","S&P 500",domain,Q4732492
+19,allstate.com,"Allstate","United States","Insurance","S&P 500",domain,Q2645636
+20,abc.xyz,"Alphabet Inc.","United States","Technology","S&P 500",domain,Q20800404
+22,altria.com,"Altria","United States","Retail & Consumer","S&P 500",domain,Q445007
+23,amazon.com,"Amazon","United States","Other","S&P 500",domain,Q3884
+24,amcor.com,"Amcor","Switzerland","Materials & Chemicals","S&P 500",domain,Q460307
+25,ameren.com,"Ameren","United States","Other","S&P 500",domain,Q462984
+26,aep.com,"American Electric Power","United States","Other","S&P 500",domain,Q464092
+27,americanexpress.com,"American Express","United Kingdom","Other","S&P 500",domain,Q194360
+28,aig.com,"American International Group","United States","Banking & Finance","S&P 500",domain,Q212235
+29,americantower.com,"American Tower Corporation","United States","Banking & Finance","S&P 500",domain,Q4745263
+30,amwater.com,"American Water Works","United States","Other","S&P 500",domain,Q467238
+31,ameriprise.com,"Ameriprise Financial","United States","Banking & Finance","S&P 500",domain,Q2843129
+32,ametek.co.jp,"Ametek","United States","Other","S&P 500",domain,Q470317
+33,amgen.com,"Amgen","United States","Healthcare","S&P 500",domain,Q470517
+34,amphenol.com,"Amphenol","United States","Technology","S&P 500",domain,Q474621
+35,analog.com,"Analog Devices","United States","Other","S&P 500",domain,Q484930
+36,aon.com,"Aon plc","United Kingdom","Other","S&P 500",domain,Q739518
+37,apachecorp.com,"APA Corporation","United States","Energy & Utilities","S&P 500",domain,Q119991
+38,apollo.com,"Apollo Global Management","United States","Banking & Finance","S&P 500",new,Q619121
+39,apple.com,"Apple Inc.","United States","Technology","S&P 500",domain,Q312
+40,appliedmaterials.com,"Applied Materials","United States","Other","S&P 500",domain,Q621610
+41,applovin.com,"AppLovin","United States","Telecommunications","S&P 500",new,Q27150212
+42,aptiv.com,"Aptiv","United Kingdom","Transportation & Logistics","S&P 500",domain,Q643626
+43,archcapgroup.com,"Arch Capital Group","United Kingdom","Insurance","S&P 500",domain,Q28155430
+44,adm.com,"Archer Daniels Midland","United States","Retail & Consumer","S&P 500",domain,Q632694
+45,aresmgmt.com,"Ares Management","United States","Banking & Finance","S&P 500",new,Q4789079
+46,arista.com,"Arista Networks","United States","Technology","S&P 500",domain,Q2861324
+47,ajg.com,"Arthur J. Gallagher & Co.","United States","Other","S&P 500",domain,Q4799191
+48,assurant.com,"Assurant","United States","Insurance","S&P 500",domain,Q4810399
+49,att.com,"AT&T","United States","Telecommunications","S&P 500",domain,Q35476
+50,atmosenergy.com,"Atmos Energy","United States","Other","S&P 500",domain,Q4817084
+51,autodesk.com,"Autodesk","United States","Technology","S&P 500",new,Q628051
+52,adp.com,"Automatic Data Processing","United States","Other","S&P 500",domain,Q489080
+53,autozone.com,"AutoZone","United States","Transportation & Logistics","S&P 500",domain,Q4826087
+54,avery.com,"Avery Dennison","United States","Materials & Chemicals","S&P 500",domain,Q790650
+55,axon.com,"Axon Enterprise","United States","Industrials","S&P 500",new,Q690604
+56,bakerhughes.com,"Baker Hughes","United States","Energy & Utilities","S&P 500",domain,Q804353
+57,ball.com,"Ball Corporation","United States","Other","S&P 500",domain,Q4034815
+58,bankofamerica.com,"Bank of America","United States","Banking & Finance","S&P 500",domain,Q487907
+59,baxter.com,"Baxter International","United States","Healthcare","S&P 500",domain,Q761965
+60,bd.com,"Becton Dickinson","United States","Technology","S&P 500",domain,Q813780
+61,berkshirehathaway.com,"Berkshire Hathaway","United States","Other","S&P 500",domain,Q217583
+62,bestbuy.com,"Best Buy","United States","Retail & Consumer","S&P 500",domain,Q533415
+63,bio-techne.com,"Bio-Techne","United States","Healthcare","S&P 500",new,Q19873469
+64,biogen.com,"Biogen","United States","Healthcare","S&P 500",domain,Q864338
+65,blackrock.com,"BlackRock","United States","Banking & Finance","S&P 500",domain,Q219635
+66,blackstone.com,"Blackstone Inc.","United States","Banking & Finance","S&P 500",new,Q880942
+67,block.xyz,"Block, Inc.","United States","Banking & Finance","S&P 500",new,Q110778747
+68,bloomenergy.com,"Bloom Energy","United States","Industrials","S&P 500",new,Q29526078
+69,bnymellon.com,"The Bank of New York Mellon","United States","Banking & Finance","S&P 500",domain,Q589288
+70,boeing.com,"Boeing","United States","Other","S&P 500",domain,Q66
+71,bookingholdings.com,"Booking Holdings","United States","Other","S&P 500",domain,Q18674747
+72,bostonscientific.com,"Boston Scientific","United States","Other","S&P 500",domain,Q894585
+73,bms.com,"Bristol-Myers Squibb","United States","Healthcare","S&P 500",domain,Q266423
+74,broadcom.com,"Broadcom","United States","Technology","S&P 500",domain,Q790060
+75,broadridge.com,"Broadridge Financial Solutions","United States","Banking & Finance","S&P 500",domain,Q4972280
+76,bbinsurance.com,"Brown & Brown","United States","Insurance","S&P 500",domain,Q4976010
+77,brown-forman.com,"Brown-Forman","United States","Retail & Consumer","S&P 500",domain,Q392221
+78,bunge.com,"Bunge Limited","United States","Retail & Consumer","S&P 500",domain,Q1009458
+79,bxp.com,"Boston Properties","United States","Real Estate & Infrastructure","S&P 500",domain,Q4844439
+80,chrobinson.com,"C. H. Robinson Worldwide","United States","Transportation & Logistics","S&P 500",domain,Q931200
+81,cadence.com,"Cadence Design Systems","United States","Technology","S&P 500",domain,Q608776
+82,camdenliving.com,"Camden Property Trust","United States","Real Estate & Infrastructure","S&P 500",new,Q5025803
+83,capitalone.com,"Capital One","United States","Banking & Finance","S&P 500",domain,Q1034654
+84,cardinalhealth.com,"Cardinal Health","United States","Healthcare","S&P 500",domain,Q902397
+85,carnivalcorp.com,"Carnival Corporation & plc","United States","Other","S&P 500",domain,Q1044059
+86,corporate.carrier.com,"Carrier Corporation","United States","Other","S&P 500",domain,Q731912
+87,carvana.com,"Carvana","United States","Retail & Consumer","S&P 500",new,Q16247191
+88,caseys.com,"Casey's","United States","Retail & Consumer","S&P 500",new,Q2940968
+89,caterpillar.com,"Caterpillar Inc.","United States","Other","S&P 500",domain,Q459965
+90,cboe.com,"Cboe Global Markets, Inc.","United States","Other","S&P 500",domain,Q30635731
+91,cbre.com,"CBRE Group","United States","Real Estate & Infrastructure","S&P 500",domain,Q1023013
+92,cdw.com,"CDW","United States","Other","S&P 500",domain,Q1023155
+93,cencora.com,"Cencora","United States","Healthcare","S&P 500",domain,Q470156
+94,centene.com,"Centene Corporation","United States","Healthcare","S&P 500",domain,Q5059102
+95,centerpointenergy.com,"CenterPoint Energy","United States","Other","S&P 500",domain,Q1053560
+96,cfindustries.com,"CF Industries","United States","Materials & Chemicals","S&P 500",domain,Q905806
+97,criver.com,"Charles River Laboratories","United States","Healthcare","S&P 500",new,Q5082076
+98,schwab.com,"Charles Schwab Corporation","United States","Banking & Finance","S&P 500",domain,Q1066028
+99,charter.com,"Charter Communications","United States","Telecommunications","S&P 500",domain,Q2961234
+100,chevron.com,"Chevron Corporation","United States","Energy & Utilities","S&P 500",domain,Q319642
+101,chipotle.com,"Chipotle Mexican Grill","United States","Retail & Consumer","S&P 500",domain,Q465751
+102,chubb.com,"Chubb Corp.","Switzerland","Insurance","S&P 500",domain,Q1089060
+103,churchdwight.com,"Church & Dwight","United States","Other","S&P 500",domain,Q5116536
+104,ciena.com,"Ciena","United States","Technology","S&P 500",new,Q1091783
+105,cigna.com,"The Cigna Group","United States","Other","S&P 500",domain,Q642271
+106,cinfin.com,"Cincinnati Financial","United States","Insurance","S&P 500",domain,Q5120253
+107,cintas.com,"Cintas","United States","Other","S&P 500",domain,Q1092571
+108,cisco.com,"Cisco","United States","Telecommunications","S&P 500",domain,Q173395
+109,citigroup.com,"Citigroup","United States","Banking & Finance","S&P 500",domain,Q219508
+110,citizensbank.com,"Citizens Financial Group","United States","Banking & Finance","S&P 500",domain,Q5122694
+111,thecloroxcompany.com,"Clorox","United States","Retail & Consumer","S&P 500",domain,Q910368
+112,cmegroup.com,"CME Group","United States","Banking & Finance","S&P 500",domain,Q1023876
+113,cmsenergy.com,"CMS Energy","United States","Other","S&P 500",domain,Q5013012
+114,coca-colacompany.com,"The Coca-Cola Company","United States","Retail & Consumer","S&P 500",domain,Q3295867
+115,cognizant.com,"Cognizant","United States","Other","S&P 500",domain,Q1107035
+116,coherent.com,"Coherent Corp.","United States","Technology","S&P 500",new,Q15109887
+117,coinbase.com,"Coinbase","United States","Banking & Finance","S&P 500",new,Q16972754
+118,colgatepalmolive.com,"Colgate-Palmolive Company","United States","Other","S&P 500",domain,Q609466
+119,corporate.comcast.com,"Comcast","United States","Telecommunications","S&P 500",domain,Q1113804
+120,comfortsystemsusa.com,"Comfort Systems USA","United States","Industrials","S&P 500",new,Q5151691
+121,conocophillips.com,"ConocoPhillips","United States","Energy & Utilities","S&P 500",domain,Q214763
+122,coned.com,"Consolidated Edison","United States","Energy & Utilities","S&P 500",domain,Q1127536
+123,cbrands.com,"Constellation Brands","United States","Other","S&P 500",domain,Q1128160
+124,constellation.com,"Constellation Energy","United States","Energy & Utilities","S&P 500",new,Q259195
+125,coopercos.com,"The Cooper Companies","United States","Healthcare","S&P 500",domain,Q1129792
+126,copart.com,"Copart","United States","Transportation & Logistics","S&P 500",domain,Q16951448
+127,corning.com,"Corning Inc.","United States","Technology","S&P 500",domain,Q5842736
+128,corpay.com,"Corpay","United States","Other","S&P 500",domain,Q16838618
+129,costargroup.com,"CoStar Group","United States","Real Estate & Infrastructure","S&P 500",domain,Q16988748
+130,costco.com,"Costco","United States","Retail & Consumer","S&P 500",domain,Q715583
+131,crh.com,"CRH plc","Ireland","Materials & Chemicals","S&P 500",new,Q1053299
+132,crowdstrike.com,"CrowdStrike","United States","Technology","S&P 500",new,Q24890758
+133,crowncastle.com,"Crown Castle International Corp.","United States","Telecommunications","S&P 500",domain,Q5189320
+134,csx.com,"CSX Corporation","United States","Transportation & Logistics","S&P 500",domain,Q1024454
+135,cummins.com,"Cummins","United States","Other","S&P 500",domain,Q173476
+136,cvshealth.com,"CVS Health","United States","Retail & Consumer","S&P 500",domain,Q624375
+137,danaher.com,"Danaher Corporation","United States","Other","S&P 500",domain,Q1159256
+138,darden.com,"Darden Restaurants","United States","Other","S&P 500",domain,Q742196
+139,datadoghq.com,"Datadog","United States","Technology","S&P 500",new,Q16248637
+140,davita.com,"DaVita","United States","Healthcare","S&P 500",new,Q5207184
+141,deckers.com,"Deckers Brands","United States","Retail & Consumer","S&P 500",new,Q1181953
+142,deere.com,"Deere & Company","United States","Other","S&P 500",domain,Q496302
+143,delltechnologies.com,"Dell Technologies","United States","Technology","S&P 500",new,Q27500963
+144,de.delta.com,"Delta Air Lines","United States","Other","S&P 500",domain,Q188920
+145,devonenergy.com,"Devon Energy","United States","Energy & Utilities","S&P 500",domain,Q1206980
+146,dexcom.com,"Dexcom","United States","Other","S&P 500",domain,Q15109865
+147,diamondbackenergy.com,"Diamondback Energy","United States","Energy & Utilities","S&P 500",domain,Q65091423
+148,digitalrealty.com,"Digital Realty Trust","United States","Banking & Finance","S&P 500",domain,Q5275969
+149,dollargeneral.com,"Dollar General","United States","Retail & Consumer","S&P 500",domain,Q145168
+150,dollartree.com,"Dollar Tree","United States","Retail & Consumer","S&P 500",domain,Q5289230
+151,dominionenergy.com,"Dominion Energy","United States","Energy & Utilities","S&P 500",domain,Q677464
+152,dominos.com,"Domino's Pizza","United States","Other","S&P 500",domain,Q839466
+153,doordash.com,"DoorDash","United States","Retail & Consumer","S&P 500",new,Q20714323
+154,dovercorporation.com,"Dover Corporation","United States","Other","S&P 500",domain,Q16974527
+155,dow.com,"Dow Inc.","United States","Materials & Chemicals","S&P 500",domain,Q855639
+156,drhorton.com,"D. R. Horton","United States","Real Estate & Infrastructure","S&P 500",domain,Q5203782
+157,dteenergy.com,"DTE Energy","United States","Energy & Utilities","S&P 500",domain,Q5206232
+158,duke-energy.com,"Duke Energy","United States","Energy & Utilities","S&P 500",domain,Q1264404
+159,dupont.com,"DuPont","United States","Materials & Chemicals","S&P 500",domain,Q221062
+160,eaton.com,"Eaton Corporation","United States","Other","S&P 500",domain,Q48872
+161,ebay.com,"eBay","United States","Retail & Consumer","S&P 500",domain,Q58024
+162,echostar.com,"EchoStar","United States","Telecommunications","S&P 500",new,Q1280748
+163,ecolab.com,"Ecolab","United States","Other","S&P 500",domain,Q1282031
+164,edison.com,"Edison International","United States","Other","S&P 500",domain,Q662095
+165,edwardslifesciences.com,"Edwards Lifesciences","United States","Healthcare","S&P 500",domain,Q16966841
+166,elevancehealth.com,"Elevance Health, Inc.","United States","Insurance","S&P 500",domain,Q677488
+167,emcorgroup.com,"Emcor","United States","Industrials","S&P 500",new,Q5370289
+168,emerson.com,"Emerson Electric","United States","Other","S&P 500",domain,Q1335585
+169,entergy.com,"Entergy","United States","Energy & Utilities","S&P 500",domain,Q1344587
+170,eogresources.com,"EOG Resources","United States","Energy & Utilities","S&P 500",domain,Q1275577
+171,eqt.com,"EQT","United States","Energy & Utilities","S&P 500",domain,Q5323987
+172,equifax.com,"Equifax","United States","Other","S&P 500",domain,Q5384453
+173,equinix.com,"Equinix","United States","Technology","S&P 500",domain,Q851641
+174,erieinsurance.com,"Erie Indemnity","United States","Banking & Finance","S&P 500",new,Q5388314
+175,essexapartmenthomes.com,"Essex Property Trust, Inc.","United States","Banking & Finance","S&P 500",domain,Q27964091
+176,elcompanies.com,"Estée Lauder Companies","France","Other","S&P 500",domain,Q1260606
+177,everestre.com,"Everest Re","United States","Banking & Finance","S&P 500",domain,Q1381973
+178,evergy.com,"Evergy","United States","Other","S&P 500",domain,Q7987107
+179,purestorage.com,"Everpure","United States","Technology","S&P 500",new,Q7261135
+180,eversource.com,"Eversource Energy","United States","Other","S&P 500",domain,Q3344199
+181,exeloncorp.com,"Exelon","United States","Energy & Utilities","S&P 500",domain,Q1383669
+182,chk.com,"Expand Energy","United States","Energy & Utilities","S&P 500",new,Q2962826
+183,expediagroup.com,"Expedia Group","United States","Other","S&P 500",domain,Q8085893
+184,expeditors.com,"Expeditors International","United States","Transportation & Logistics","S&P 500",domain,Q1384324
+185,extraspace.com,"Extra Space Storage","United States","Other","S&P 500",domain,Q5422162
+186,corporate.exxonmobil.com,"ExxonMobil","United States","Energy & Utilities","S&P 500",domain,Q156238
+187,f5.com,"F5, Inc.","United States","Technology","S&P 500",domain,Q3029296
+188,factset.com,"FactSet","United States","Banking & Finance","S&P 500",new,Q1885491
+189,fico.com,"Fair Isaac","United States","Technology","S&P 500",new,Q1392999
+190,fastenal.com,"Fastenal","United States","Other","S&P 500",domain,Q3067119
+191,federalrealty.com,"Federal Realty Investment Trust","United States","Banking & Finance","S&P 500",domain,Q27988152
+192,fedex.com,"FedEx","Canada","Transportation & Logistics","S&P 500",domain,Q459477
+194,ferguson.com,"Ferguson Enterprises","United States","Industrials","S&P 500",new,Q5444235
+195,fisglobal.com,"Fidelity National Information Services","United States","Banking & Finance","S&P 500",domain,Q1411295
+196,ir.53.com,"Fifth Third Bancorp","United States","Other","S&P 500",name,Q1411810
+197,firstsolar.com,"First Solar","United States","Technology","S&P 500",new,Q1138888
+198,firstenergycorp.com,"FirstEnergy","United States","Other","S&P 500",domain,Q1419248
+199,fiserv.com,"Fiserv","United States","Banking & Finance","S&P 500",domain,Q1420513
+200,flex.com,"Flex Ltd.","United States","Technology","S&P 500",new,Q1140680
+201,ford.com,"Ford Motor Company","United States","Transportation & Logistics","S&P 500",domain,Q44294
+202,fortinet.com,"Fortinet","United States","Technology","S&P 500",domain,Q2749364
+203,fortive.com,"Fortive","United States","Other","S&P 500",domain,Q27919383
+204,foxcorporation.com,"Fox Corporation","United States","Media & Entertainment","S&P 500",domain,Q60238941
+206,franklintempleton.com,"Franklin Templeton Investments","United States","Banking & Finance","S&P 500",domain,Q744683
+207,fcx.com,"Freeport-McMoRan","United States","Energy & Utilities","S&P 500",domain,Q1453620
+208,garmin.com,"Garmin Ltd.","Switzerland","Other","S&P 500",domain,Q658789
+209,gartner.com,"Gartner","United States","Other","S&P 500",domain,Q174198
+210,geaerospace.com,"GE Aerospace","United States","Industrials","S&P 500",new,Q1485061
+211,gehealthcare.com,"GE HealthCare","United States","Healthcare","S&P 500",new,Q1152374
+212,gevernova.com,"GE Vernova","United States","Industrials","S&P 500",new,Q118957699
+213,gendigital.com,"Gen Digital","United States","Technology","S&P 500",domain,Q677085
+214,generac.com,"Generac","United States","Industrials","S&P 500",new,Q5531627
+215,gd.com,"General Dynamics","United States","Other","S&P 500",domain,Q502940
+216,generalmills.com,"General Mills","United States","Retail & Consumer","S&P 500",domain,Q629998
+217,gm.com,"General Motors","United States","Transportation & Logistics","S&P 500",domain,Q81965
+218,genpt.com,"Genuine Parts Company","United States","Other","S&P 500",domain,Q5533818
+219,gilead.com,"Gilead Sciences","United States","Healthcare","S&P 500",domain,Q663596
+220,globalpaymentsinc.com,"Global Payments","United States","Other","S&P 500",domain,Q5570544
+221,torchmarkcorp.com,"Globe Life","United States","Banking & Finance","S&P 500",domain,Q7825574
+222,godaddy.com,"GoDaddy","United States","Technology","S&P 500",new,Q1416215
+223,goldmansachs.com,"Goldman Sachs","United States","Banking & Finance","S&P 500",domain,Q193326
+224,halliburton.com,"Halliburton","United States","Energy & Utilities","S&P 500",domain,Q656165
+225,thehartford.com,"The Hartford","United States","Other","S&P 500",domain,Q444110
+226,shop.hasbro.com,"Hasbro","United States","Other","S&P 500",domain,Q501476
+227,hcahealthcare.com,"HCA Corporation","United States","Healthcare","S&P 500",domain,Q1630431
+228,hcpi.com,"Healthpeak Properties","United States","Banking & Finance","S&P 500",domain,Q16975567
+229,henryschein.com,"Henry Schein","United States","Other","S&P 500",domain,Q905086
+230,thehersheycompany.com,"The Hershey Company","United States","Other","S&P 500",domain,Q1056637
+231,hpe.com,"Hewlett Packard Enterprise","United States","Technology","S&P 500",domain,Q19923099
+232,hilton.com,"Hilton Worldwide","United States","Healthcare","S&P 500",domain,Q1057464
+233,homedepot.com,"The Home Depot","United States","Other","S&P 500",domain,Q864407
+234,honeywellaerospace.com,"Honeywell Aerospace","United States","Industrials","S&P 500",new,Q5893992
+235,honeywell.com,"Honeywell International, Inc.","United States","Other","S&P 500",domain,Q898208
+236,hormel.com,"Hormel","United States","Retail & Consumer","S&P 500",domain,Q1454852
+237,hosthotels.com,"Host Hotels & Resorts","United States","Other","S&P 500",domain,Q1630559
+238,howmet.com,"Howmet Aerospace","United States","Defence & Security","S&P 500",domain,Q25104597
+239,hp.com,"Hewlett-Packard","United States","Technology","S&P 500",domain,Q21404084
+240,hubbell.com,"Hubbell Incorporated","United States","Industrials","S&P 500",new,Q21036456
+241,humana.com,"Humana","United States","Insurance","S&P 500",domain,Q910866
+242,huntington.com,"Huntington Bancshares","United States","Banking & Finance","S&P 500",domain,Q798819
+243,hii.com,"Huntington Ingalls Industries","United States","Other","S&P 500",domain,Q7257522
+244,ibm.com,"IBM","United States","Technology","S&P 500",domain,Q37156
+245,idexcorp.com,"IDEX Corporation","United States","Other","S&P 500",domain,Q5970002
+246,idexx.com,"IDEXX Laboratories, Inc.","Netherlands","Healthcare","S&P 500",domain,Q1758392
+247,itw.com,"Illinois Tool Works","United States","Other","S&P 500",domain,Q1510378
+248,illumina.com,"Illumina","United States","Technology","S&P 500",domain,Q2068984
+249,incyte.com,"Incyte","United States","Healthcare","S&P 500",domain,Q6015591
+250,ingersollrand.com,"Ingersoll Rand","Ireland","Other","S&P 500",name,Q55453962
+251,,"Insulet Corporation","United States","Healthcare","S&P 500",missing,
+252,intel.com,"Intel","United States","Other","S&P 500",domain,Q248
+253,interactivebrokers.com,"Interactive Brokers","United States","Banking & Finance","S&P 500",new,Q20011294
+254,intercontinentalexchange.com,"Intercontinental Exchange","United States","Other","S&P 500",domain,Q841458
+255,iff.com,"International Flavors & Fragrances","United States","Materials & Chemicals","S&P 500",domain,Q1666568
+256,internationalpaper.com,"International Paper","United States","Other","S&P 500",domain,Q202972
+257,intuit.com,"Intuit","United States","Technology","S&P 500",domain,Q1318848
+258,intuitive.com,"Intuitive Surgical","United States","Other","S&P 500",domain,Q2743863
+259,invesco.com,"Invesco","United States","Banking & Finance","S&P 500",domain,Q522617
+260,invitationhomes.com,"Invitation Homes","United States","Real Estate & Infrastructure","S&P 500",new,Q85769855
+261,iqvia.com,"IQVIA Holdings, Inc.","United States","Healthcare","S&P 500",domain,Q305473
+262,ironmountain.com,"Iron Mountain Incorporated","United States","Technology","S&P 500",domain,Q1673079
+263,jbhunt.com,"J. B. Hunt","United States","Other","S&P 500",domain,Q4041705
+264,jabil.com,"Jabil","United States","Technology","S&P 500",domain,Q2171646
+265,jackhenry.com,"Jack Henry & Associates","United States","Other","S&P 500",domain,Q6113060
+266,jacobs.com,"Jacobs Engineering Group","United States","Other","S&P 500",domain,Q3157622
+267,jjmt.com.tw,"Johnson & Johnson","United States","Healthcare","S&P 500",name,Q333718
+268,johnsoncontrols.com,"Johnson Controls","Ireland","Other","S&P 500",domain,Q667865
+269,jpmorgan.com,"JPMorgan Chase","United States","Banking & Finance","S&P 500",domain,Q192314
+270,drpeppersnapplegroup.com,"Keurig Dr Pepper","United States","Retail & Consumer","S&P 500",new,Q3116111
+271,key.com,"KeyBank","United States","Banking & Finance","S&P 500",domain,Q1740314
+272,keysight.com,"Keysight Technologies","United States","Other","S&P 500",domain,Q17551096
+273,kimberly-clark.com,"Kimberly-Clark","United States","Other","S&P 500",domain,Q1741634
+274,kimcorealty.com,"Kimco Realty","United States","Banking & Finance","S&P 500",domain,Q6410043
+275,kindermorgan.com,"Kinder Morgan","United States","Energy & Utilities","S&P 500",domain,Q931032
+276,kkr.com,"KKR & Co.","United States","Banking & Finance","S&P 500",new,Q1570773
+277,kla.com,"KLA Corporation","United States","Technology","S&P 500",domain,Q624649
+278,kraftheinzcompany.com,"Kraft Heinz","United States","Retail & Consumer","S&P 500",domain,Q19681433
+279,kroger.com,"Kroger","United States","Retail & Consumer","S&P 500",domain,Q153417
+280,l3harris.com,"L3Harris Technologies","United States","Defence & Security","S&P 500",domain,Q30291091
+281,labcorp.com,"LabCorp","United States","Healthcare","S&P 500",domain,Q6466630
+282,lamresearch.com,"Lam Research","United States","Other","S&P 500",domain,Q1342041
+283,lasvegassands.com,"Las Vegas Sands","United States","Other","S&P 500",domain,Q1506045
+284,leidos.com,"Leidos","United States","Defence & Security","S&P 500",domain,Q502132
+285,lennar.com,"Lennar Corporation","United States","Real Estate & Infrastructure","S&P 500",domain,Q16981175
+286,lennox.com,"Lennox International","United States","Industrials","S&P 500",new,Q224751
+287,lilly.com,"Eli Lilly and Company","United States","Healthcare","S&P 500",domain,Q632240
+288,linde.com,"Linde plc","United Kingdom","Materials & Chemicals","S&P 500",domain,Q682759
+289,livenationentertainment.com,"Live Nation Entertainment","United States","Other","S&P 500",domain,Q1061903
+290,lockheedmartin.com,"Lockheed Martin","United States","Technology","S&P 500",domain,Q7240
+291,loews.com,"Loews Corporation","United States","Other","S&P 500",domain,Q826526
+292,lowes.com,"Lowe's","United States","Other","S&P 500",domain,Q1373493
+293,shop.lululemon.com,"Lululemon Athletica","Canada","Retail & Consumer","S&P 500",new,Q6702957
+294,,"Lumentum","United States","Technology","S&P 500",missing,Q138786899
+295,lyondellbasell.com,"LyondellBasell","Netherlands","Other","S&P 500",domain,Q899255
+296,mtb.com,"M&T Bank","United States","Banking & Finance","S&P 500",domain,Q3272257
+297,marathonpetroleum.com,"Marathon Petroleum","United States","Energy & Utilities","S&P 500",domain,Q458363
+298,marriott.com.cn,"Marriott International","United States","Healthcare","S&P 500",domain,Q1141173
+299,mmc.com,"Marsh & McLennan Companies","United States","Other","S&P 500",domain,Q1786345
+300,martinmarietta.com,"Martin Marietta Materials","United States","Energy & Utilities","S&P 500",domain,Q6776123
+301,marvell.com,"Marvell Technology","United States","Technology","S&P 500",new,Q1347782
+302,masco.com,"Masco","United States","Other","S&P 500",domain,Q6782872
+303,mastercard.com,"Mastercard","United States","Banking & Finance","S&P 500",domain,Q489921
+304,mccormickcorporation.com,"McCormick & Company","United States","Retail & Consumer","S&P 500",domain,Q1915049
+305,mcdonalds.com,"McDonald's","United States","Retail & Consumer","S&P 500",domain,Q38076
+306,mckesson.com,"McKesson Corporation","United States","Other","S&P 500",domain,Q570473
+307,medtronic.com,"Medtronic plc","Ireland","Technology","S&P 500",domain,Q642189
+308,merck.com,"Merck & Co.","United States","Healthcare","S&P 500",domain,Q247489
+309,meta.com,"Meta","United States","Technology","S&P 500",domain,Q380
+310,metlife.com,"MetLife","United States","Insurance","S&P 500",domain,Q607131
+311,mt.com,"Mettler Toledo","Switzerland","Other","S&P 500",domain,Q680186
+312,mgmresorts.com,"MGM Resorts International","United States","Healthcare","S&P 500",domain,Q568532
+313,microchip.com,"Microchip Technology","United States","Technology","S&P 500",domain,Q1545076
+314,micron.com.jp,"Micron Technology","United States","Other","S&P 500",domain,Q1197548
+315,microsoft.com,"Microsoft","United States","Technology","S&P 500",domain,Q2283
+316,maac.com,"MAA","United States","Banking & Finance","S&P 500",domain,Q27988239
+317,modernatx.com,"Moderna","United States","Healthcare","S&P 500",new,Q17081612
+318,mondelezinternational.com,"Mondelez International","United States","Retail & Consumer","S&P 500",domain,Q12857502
+319,monolithicpower.com,"Monolithic Power Systems","United States","Technology","S&P 500",domain,Q22058448
+320,monsterbevcorp.com,"Monster Beverage","United States","Retail & Consumer","S&P 500",domain,Q1945295
+321,moodys.com,"Moody's Corporation","United States","Banking & Finance","S&P 500",domain,Q675585
+322,morganstanley.com,"Morgan Stanley","United Kingdom","Banking & Finance","S&P 500",domain,Q334204
+323,mosaicco.com,"The Mosaic Company","United States","Other","S&P 500",domain,Q7752327
+324,motorolasolutions.com,"Motorola Solutions","United States","Telecommunications","S&P 500",domain,Q634815
+325,msci.com,"MSCI","United States","Other","S&P 500",domain,Q768773
+326,business.nasdaq.com,"Nasdaq, Inc.","United States","Banking & Finance","S&P 500",domain,Q1472929
+327,netapp.com,"NetApp","United States","Other","S&P 500",domain,Q727883
+328,ir.netflix.net,"Netflix","United States","Telecommunications","S&P 500",new,Q116452644
+329,newmont.com,"Newmont Mining Corporation","United States","Energy & Utilities","S&P 500",domain,Q1785405
+330,newscorp.com,"News Corp","United States","Other","S&P 500",domain,Q14289857
+332,nexteraenergy.com,"NextEra Energy","United States","Energy & Utilities","S&P 500",domain,Q967868
+333,nike.com,"Nike","United States","Other","S&P 500",domain,Q483915
+334,nisource.com,"NiSource","United States","Other","S&P 500",domain,Q1984481
+335,nordson.com,"Nordson Corporation","United States","Industrials","S&P 500",new,Q1998662
+336,norfolksouthern.com,"Norfolk Southern Railway","United States","Transportation & Logistics","S&P 500",domain,Q1321054
+337,northerntrust.com,"Northern Trust","United States","Banking & Finance","S&P 500",domain,Q970695
+338,northropgrumman.com,"Northrop Grumman Corporation","United States","Technology","S&P 500",domain,Q329953
+339,,"Norwegian Cruise Line Holdings","United States","Retail & Consumer","S&P 500",missing,Q60767471
+340,nrg.com,"NRG Energy","United States","Other","S&P 500",domain,Q6955139
+341,nucor.com,"Nucor","United States","Materials & Chemicals","S&P 500",domain,Q1645081
+342,nvidia.com,"Nvidia","United States","Technology","S&P 500",domain,Q182477
+343,nvrinc.com,"NVR, Inc.","United States","Other","S&P 500",domain,Q6955706
+344,ru.nxp.com,"NXP Semiconductors","Netherlands","Technology","S&P 500",new,Q1155668
+345,oreillyauto.com,"O'Reilly Auto Parts","United States","Retail & Consumer","S&P 500",domain,Q7071951
+346,oxy.com,"Occidental Petroleum","United States","Energy & Utilities","S&P 500",domain,Q2013357
+347,okta.com,"Okta, Inc.","United States","Technology","S&P 500",new,Q55627388
+348,odfl.com,"Old Dominion Freight Line","United States","Transportation & Logistics","S&P 500",domain,Q7083862
+349,omnicomgroup.com,"Omnicom Group","United States","Other","S&P 500",domain,Q1519267
+350,onsemi.com,"ON Semiconductor","United States","Technology","S&P 500",new,Q1671509
+351,oneok.com,"ONEOK","United States","Other","S&P 500",domain,Q11074156
+352,oracle.com,"Oracle Corporation","United States","Technology","S&P 500",domain,Q19900
+353,otis.com,"Otis Worldwide Corporation","United States","Other","S&P 500",domain,Q1134069
+354,paccar.com,"PACCAR","United States","Transportation & Logistics","S&P 500",domain,Q1477661
+355,packagingcorp.com,"Packaging Corporation of America","United States","Other","S&P 500",domain,Q16983334
+356,palantir.com,"Palantir Technologies","United States","Technology","S&P 500",new,Q2047336
+357,paloaltonetworks.com,"Palo Alto Networks","United States","Technology","S&P 500",new,Q7128508
+358,parker.com,"Parker Hannifin","United States","Other","S&P 500",domain,Q1470619
+359,paychex.com,"Paychex","United States","Other","S&P 500",domain,Q946080
+360,paypal.com,"PayPal","United States","Banking & Finance","S&P 500",new,Q483959
+361,pentair.com,"Pentair","United Kingdom","Other","S&P 500",domain,Q7165001
+362,pepsico.com,"PepsiCo","Belgium","Retail & Consumer","S&P 500",domain,Q334800
+363,pfizer.com,"Pfizer","United States","Healthcare","S&P 500",domain,Q206921
+364,pge.com,"PG&E Corporation","United States","Energy & Utilities","S&P 500",new,Q1815011
+365,pmi.com,"Philip Morris International","United States","Retail & Consumer","S&P 500",domain,Q1852556
+366,phillips66.com,"Phillips 66","United States","Other","S&P 500",domain,Q1656230
+367,pinnaclewest.com,"Pinnacle West Capital Corporation","United States","Other","S&P 500",domain,Q26110522
+368,pnc.com,"PNC Financial Services","United States","Banking & Finance","S&P 500",domain,Q38928
+369,ppg.com,"PPG Industries","United States","Materials & Chemicals","S&P 500",domain,Q48754
+370,pplweb.com,"PPL","United States","Other","S&P 500",domain,Q2044512
+371,principal.com,"Principal Financial Group","United States","Other","S&P 500",domain,Q3403513
+372,pg.com,"Procter & Gamble","United States","Healthcare","S&P 500",domain,Q212405
+373,progressive.com,"Progressive Corporation","United States","Insurance","S&P 500",domain,Q7248721
+374,prologis.com,"Prologis","South Korea","Banking & Finance","S&P 500",domain,Q16983765
+375,prudential.com,"Prudential Financial","United States","Insurance","S&P 500",domain,Q2114414
+376,ptc.com,"PTC Inc.","United States","Technology","S&P 500",new,Q1760641
+377,pseg.com,"Public Service Enterprise Group","United States","Other","S&P 500",domain,Q930919
+378,publicstorage.com,"Public Storage","United States","Other","S&P 500",domain,Q1156045
+379,pulte.com,"PulteGroup","United States","Other","S&P 500",domain,Q7259716
+380,qnityelectronics.com,"Qnity Electronics","Taiwan","Technology","S&P 500",new,Q138685636
+381,qualcomm.com,"Qualcomm","United States","Other","S&P 500",domain,Q544847
+382,quantaservices.com,"Quanta Services","United States","Other","S&P 500",domain,Q7268886
+383,questdiagnostics.com,"Quest Diagnostics","United States","Healthcare","S&P 500",domain,Q7271456
+384,ralphlauren.com,"Ralph Lauren Corporation","United States","Other","S&P 500",domain,Q1641437
+385,raymondjames.com,"Raymond James Financial","United States","Banking & Finance","S&P 500",domain,Q7298901
+386,reddit.com,"Reddit","United States","Telecommunications","S&P 500",new,Q1136
+387,realtyincome.com,"Realty Income Corporation","United States","Banking & Finance","S&P 500",domain,Q7301386
+388,regencycenters.com,"Regency Centers","United States","Banking & Finance","S&P 500",domain,Q7308000
+389,regeneron.com,"Regeneron Pharmaceuticals","United States","Healthcare","S&P 500",domain,Q7308054
+390,regions.com,"Regions Financial Corporation","United States","Banking & Finance","S&P 500",domain,Q917131
+391,republicservices.com,"Republic Services","United States","Other","S&P 500",domain,Q7314415
+392,resmed.com,"Resmed","United States","Other","S&P 500",domain,Q7314903
+393,revvity.com,"Revvity","United States","Healthcare","S&P 500",new,Q120467527
+394,robinhood.com,"Robinhood Markets","United States","Banking & Finance","S&P 500",new,Q18155123
+395,rockwellautomation.com,"Rockwell Automation","United States","Other","S&P 500",domain,Q1529234
+396,rollins.com,"Rollins Inc.","United States","Other","S&P 500",domain,Q7361273
+397,roperind.com,"Roper Technologies","United States","Other","S&P 500",domain,Q16932392
+398,rossstores.com,"Ross Dress for Less","United States","Retail & Consumer","S&P 500",domain,Q3442791
+399,royalcaribbeangroup.com,"Royal Caribbean Group","United States","Other","S&P 500",domain,Q427881
+400,rtx.com,"RTX","United States","Defence & Security","S&P 500",domain,Q89368734
+401,spglobal.com,"S&P Global","United States","Banking & Finance","S&P 500",domain,Q868587
+402,salesforce.com,"Salesforce","United States","Technology","S&P 500",domain,Q941127
+403,sandisk.com,"Sandisk","United States","Technology","S&P 500",new,Q260833
+404,sbasite.com,"SBA Communications","United States","Telecommunications","S&P 500",domain,Q7388926
+405,slb.com,"SLB","United States","Energy & Utilities","S&P 500",domain,Q1425316
+406,seagate.com,"Seagate Technology","United States","Technology","S&P 500",domain,Q705392
+407,sempra.com,"Sempra","United States","Other","S&P 500",domain,Q7449804
+408,servicenow.com,"ServiceNow","United States","Technology","S&P 500",domain,Q7455653
+409,sherwin-williams.com.mx,"Sherwin-Williams","United States","Materials & Chemicals","S&P 500",domain,Q48881
+410,simon.com,"Simon Property Group","United States","Banking & Finance","S&P 500",domain,Q2287759
+411,skydance.com,"Skydance","United States","Telecommunications","S&P 500",new,Q141613344
+412,skyworksinc.com,"Skyworks Solutions","United States","Technology","S&P 500",domain,Q7538146
+413,jmsmucker.com,"The J.M. Smucker Company","United States","Other","S&P 500",domain,Q7742790
+414,smurfitkappa.com,"Smurfit Kappa","Ireland","Transportation & Logistics","S&P 500",domain,Q1536176
+415,snapon.com,"Snap-on","Canada","Other","S&P 500",domain,Q1631922
+416,solventum.com,"Solventum","United States","Healthcare","S&P 500",new,Q124795355
+417,southerncompany.com,"Southern Company","United States","Energy & Utilities","S&P 500",domain,Q2304693
+418,espanol.southwest.com,"Southwest Airlines","United States","Transportation & Logistics","S&P 500",domain,Q503308
+419,stanleyblackanddecker.com,"Stanley Black & Decker","United States","Energy & Utilities","S&P 500",domain,Q706094
+420,starbucks.com,"Starbucks","United States","Other","S&P 500",domain,Q37158
+421,statestreet.com,"State Street Corporation","United States","Banking & Finance","S&P 500",domain,Q2037125
+422,steeldynamics.com,"Steel Dynamics","United States","Materials & Chemicals","S&P 500",new,Q7605667
+423,steris.com,"Steris","United States","Healthcare","S&P 500",domain,Q80947821
+424,stryker.com,"Stryker Corporation","United States","Technology","S&P 500",domain,Q2357515
+425,supermicro.com,"Supermicro","United States","Technology","S&P 500",new,Q1817174
+426,synchronybank.com,"Synchrony Financial","United States","Banking & Finance","S&P 500",domain,Q18387139
+427,synopsys.com,"Synopsys","United States","Technology","S&P 500",domain,Q2303478
+428,sysco.com,"Sysco","United States","Other","S&P 500",domain,Q2376711
+429,t-mobile.com,"T-Mobile US","United States","Telecommunications","S&P 500",domain,Q3511885
+430,troweprice.com,"T. Rowe Price","United States","Banking & Finance","S&P 500",domain,Q3511946
+431,take2games.com,"Take-Two Interactive","United States","Other","S&P 500",domain,Q94933
+432,tapestry.com,"Tapestry, Inc.","Australia","Other","S&P 500",domain,Q56273715
+433,targaresources.com,"Targa Resources","United States","Energy & Utilities","S&P 500",new,Q7685824
+434,target.com,"Target Corporation","United States","Retail & Consumer","S&P 500",domain,Q1046951
+435,te.com,"TE Connectivity","Switzerland","Technology","S&P 500",domain,Q663452
+436,teledyne.com,"Teledyne Technologies","United States","Other","S&P 500",domain,Q7696127
+437,teradyne.com,"Teradyne","United States","Other","S&P 500",domain,Q2404292
+438,tesla.com,"Tesla, Inc.","United States","Other","S&P 500",domain,Q478214
+439,ti.com,"Texas Instruments","United States","Technology","S&P 500",domain,Q193412
+440,texaspacific.com,"Texas Pacific Land Corporation","United States","Energy & Utilities","S&P 500",new,Q7707900
+441,textron.com,"Textron","United States","Transportation & Logistics","S&P 500",domain,Q2140315
+442,thermofisher.com,"Thermo Fisher Scientific Inc.","United States","Technology","S&P 500",domain,Q643674
+443,tjx.com,"TJX Companies","United States","Retail & Consumer","S&P 500",domain,Q1285819
+444,tkogrp.com,"TKO Group Holdings","United States","Telecommunications","S&P 500",new,Q120435068
+445,tractorsupply.com,"Tractor Supply Company","United States","Retail & Consumer","S&P 500",domain,Q15109925
+446,tranetechnologies.com,"Trane Technologies","Ireland","Industrials","S&P 500",new,Q131744111
+447,transdigm.com,"TransDigm Group Inc.","United States","Other","S&P 500",domain,Q7833612
+448,travelers.com,"The Travelers Companies","United States","Insurance","S&P 500",domain,Q942471
+449,trimble.com,"Trimble","United States","Other","S&P 500",domain,Q2297063
+450,truist.com,"Truist Financial","United States","Banking & Finance","S&P 500",domain,Q795486
+451,authy.com,"Twilio","United States","Technology","S&P 500",new,Q7858039
+452,tylertech.com,"Tyler Technologies","United States","Technology","S&P 500",domain,Q48802335
+453,tyson.com,"Tyson Foods","United States","Other","S&P 500",domain,Q1325987
+454,usbank.com,"U.S. Bancorp","United States","Banking & Finance","S&P 500",domain,Q739084
+455,uber.com,"Uber","United States","Technology","S&P 500",domain,Q780442
+456,udr.com,"UDR","United States","Banking & Finance","S&P 500",domain,Q27988153
+457,ulta.com,"Ulta Beauty","United States","Other","S&P 500",domain,Q7880076
+458,up.com,"Union Pacific Corporation","United States","Transportation & Logistics","S&P 500",domain,Q20183163
+459,ir.united.com,"United Airlines Holdings","United States","Transportation & Logistics","S&P 500",name,Q174769
+460,ups.com,"United Parcel Service","United States","Transportation & Logistics","S&P 500",domain,Q155026
+461,unitedrentals.com,"United Rentals","Sweden","Other","S&P 500",domain,Q7889101
+462,unitedhealthgroup.com,"UnitedHealth Group","United States","Insurance","S&P 500",domain,Q2103926
+463,uhsinc.com,"Universal Health Services","United States","Other","S&P 500",domain,Q7893967
+464,valero.com,"Valero Energy","United States","Energy & Utilities","S&P 500",domain,Q1283291
+465,veeva.com,"Veeva Systems","United States","Healthcare","S&P 500",new,Q24204493
+466,ventasreit.com,"Ventas, Inc.","United States","Banking & Finance","S&P 500",domain,Q19865761
+467,veralto.com,"Veralto","United States","Industrials","S&P 500",new,Q124721239
+468,verisign.com,"Verisign","United States","Technology","S&P 500",domain,Q734338
+469,verisk.com,"Verisk Analytics","United States","Other","S&P 500",domain,Q7921370
+470,verizon.com,"Verizon Communications","United States","Telecommunications","S&P 500",domain,Q467752
+471,vrtx.com,"Vertex Pharmaceuticals","United States","Technology","S&P 500",domain,Q2744099
+472,vertiv.com,"Vertiv","United States","Industrials","S&P 500",new,Q5370909
+473,viatris.com,"Viatris","United States","Healthcare","S&P 500",domain,Q101983981
+474,viciproperties.com,"Vici Properties","United States","Real Estate & Infrastructure","S&P 500",new,Q54263910
+475,corporate.visa.com,"Visa Inc.","United States","Banking & Finance","S&P 500",domain,Q328840
+476,vistracorp.com,"Vistra Corp.","United States","Energy & Utilities","S&P 500",new,Q104158381
+477,equityapartments.com,"Equity Residential","United States","Real Estate & Infrastructure","S&P 500",domain,Q187740
+478,vulcanmaterials.com,"Vulcan Materials Company","United States","Materials & Chemicals","S&P 500",domain,Q1685287
+479,corteva.com,"Corteva","United States","Energy & Utilities","S&P 500",domain,Q63197674
+480,wrberkley.com,"W. R. Berkley","United States","Insurance","S&P 500",domain,Q1369955
+481,grainger.com,"W. W. Grainger","United States","Other","S&P 500",domain,Q1627894
+482,wabteccorp.com,"Wabtec","United States","Transportation & Logistics","S&P 500",domain,Q741707
+483,walmart.com,"Walmart","United States","Retail & Consumer","S&P 500",new,Q483551
+484,disney.com,"The Walt Disney Company","United States","Media & Entertainment","S&P 500",domain,Q7414
+485,wm.com,"Waste Management, Inc","United States","Other","S&P 500",domain,Q2552219
+486,waters.com,"Waters Corporation","United States","Other","S&P 500",domain,Q1322011
+487,wisconsinenergy.com,"WEC Energy Group","United States","Other","S&P 500",domain,Q8027166
+488,wellsfargo.com,"Wells Fargo","United States","Banking & Finance","S&P 500",domain,Q744149
+489,welltower.com,"Welltower","United States","Banking & Finance","S&P 500",domain,Q20486917
+490,westpharma.com,"West Pharmaceutical Services (United States)","United States","Other","S&P 500",domain,Q30338243
+491,westerndigital.com,"Western Digital","United States","Technology","S&P 500",domain,Q738770
+492,weyerhaeuser.com,"Weyerhaeuser","United States","Other","S&P 500",domain,Q1780382
+493,williams-sonomainc.com,"Williams-Sonoma, Inc.","United States","Retail & Consumer","S&P 500",new,Q2581220
+494,williams.com,"Williams Companies","United States","Energy & Utilities","S&P 500",domain,Q930639
+495,wtwco.com,"Willis Towers Watson","United Kingdom","Other","S&P 500",domain,Q21189883
+496,workday.com,"Workday, Inc.","United States","Technology","S&P 500",new,Q8034666
+497,wynnresorts.com,"Wynn Resorts","United States","Other","S&P 500",domain,Q2274089
+498,my.xcelenergy.com,"Xcel Energy","United States","Other","S&P 500",domain,Q1486956
+499,xylem.com,"Xylem Inc.","United States","Other","S&P 500",domain,Q3146975
+500,yum.com,"Yum! Brands","United States","Retail & Consumer","S&P 500",domain,Q668737
+501,zebra.com,"Zebra Technologies","United States","Technology","S&P 500",domain,Q2443609
+502,zimmer.com,"Zimmer Biomet Holdings","United States","Healthcare","S&P 500",domain,Q203552
+503,zoetis.com,"Zoetis","United States","Healthcare","S&P 500",domain,Q8073337

@@ -1,0 +1,101 @@
+rank,domain,company_name,country,sector,index,match,qid
+1,3i.com,"3i","United Kingdom","Banking & Finance","FTSE 100",domain,Q229764
+2,aberdeenplc.com,"Aberdeen Group","United Kingdom","Banking & Finance","FTSE 100",new,Q54621936
+3,admiralgroup.co.uk,"Admiral Group","United Kingdom","Insurance","FTSE 100",domain,Q267417
+4,africa.airtel.com,"Airtel Africa",,"Telecommunications","FTSE 100",new,Q4699029
+5,alliancetrust.co.uk,"Alliance Witan","United Kingdom","Banking & Finance","FTSE 100",new,Q4732335
+6,angloamerican.com,"Anglo American plc","United Kingdom","Materials & Chemicals","FTSE 100",domain,Q541451
+7,antofagasta.co.uk,"Antofagasta plc","United Kingdom","Materials & Chemicals","FTSE 100",domain,Q585150
+8,abf.co.uk,"Associated British Foods","United Kingdom","Retail & Consumer","FTSE 100",domain,Q117059
+9,astrazeneca.com,"AstraZeneca","United Kingdom","Healthcare","FTSE 100",domain,Q731938
+10,autotrader.co.uk,"Auto Trader Group","United Kingdom","Media & Entertainment","FTSE 100",domain,Q4826130
+11,aviva.co.uk,"Aviva","United Kingdom","Insurance","FTSE 100",domain,Q791179
+12,babcockinternational.com,"Babcock International","United Kingdom","Defence & Security","FTSE 100",new,Q385426
+13,baesystems.com,"BAE Systems","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q739416
+14,balfourbeatty.com,"Balfour Beatty","United Kingdom","Other","FTSE 100",domain,Q804920
+15,home.barclays,"Barclays","United Kingdom","Banking & Finance","FTSE 100",domain,Q245343
+16,barrattdevelopments.co.uk,"Barratt Developments","United Kingdom","Retail & Consumer","FTSE 100",domain,Q591090
+17,bp.com,"BP","United Kingdom","Energy & Utilities","FTSE 100",domain,Q152057
+18,bat.com,"British American Tobacco","United Kingdom","Retail & Consumer","FTSE 100",domain,Q856411
+19,britishland.com,"British Land","United Kingdom","Banking & Finance","FTSE 100",new,Q919646
+20,bt.com,"BT Group","United Kingdom","Telecommunications","FTSE 100",domain,Q593786
+21,bunzl.com,"Bunzl","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q872718
+22,burberry.com,"Burberry","United Kingdom","Retail & Consumer","FTSE 100",domain,Q390107
+23,centrica.com,"Centrica","United Kingdom","Energy & Utilities","FTSE 100",domain,Q259013
+24,cocacolaep.com,"Coca-Cola Europacific Partners","United Kingdom","Retail & Consumer","FTSE 100",new,Q20811256
+25,coca-colahellenic.com,"Coca-Cola HBC","Switzerland","Retail & Consumer","FTSE 100",domain,Q1104910
+26,compass-group.com,"Compass Group","United Kingdom","Other","FTSE 100",domain,Q782697
+27,computacenter.com,"Computacenter","United Kingdom","Technology","FTSE 100",new,Q211237
+28,convatec.com,"ConvaTec","United Kingdom","Healthcare","FTSE 100",domain,Q5166105
+29,croda.com,"Croda International","United Kingdom","Materials & Chemicals","FTSE 100",domain,Q3003175
+30,dcc.ie,"DCC Energy","Ireland","Industrials","FTSE 100",new,Q5204483
+31,diageo.com,"Diageo","United Kingdom","Retail & Consumer","FTSE 100",domain,Q161140
+32,diplomaplc.com,"Diploma plc","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q5279891
+33,easyjet.com,"EasyJet","United Kingdom","Other","FTSE 100",domain,Q191551
+34,endeavourmining.com,"Endeavour Mining","United Kingdom","Materials & Chemicals","FTSE 100",domain,Q5375992
+35,experian.com,"Experian","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q692157
+36,foreignandcolonial.com,"F & C Investment Trust","United Kingdom","Banking & Finance","FTSE 100",new,Q5468204
+37,fresnilloplc.com,"Fresnillo plc","United Kingdom","Energy & Utilities","FTSE 100",new,Q3087545
+38,warhammer.com,"Games Workshop","United Kingdom","Retail & Consumer","FTSE 100",domain,Q587270
+39,glencore.com,"Glencore","United Kingdom","Materials & Chemicals","FTSE 100",domain,Q169339
+40,gsk.com,"GSK plc","United Kingdom","Healthcare","FTSE 100",domain,Q212322
+41,haleon.com,"Haleon","United Kingdom","Retail & Consumer","FTSE 100",domain,Q112860932
+42,halma.com,"Halma plc","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q5643254
+43,hiscoxgroup.com,"Hiscox","Bermuda","Insurance","FTSE 100",domain,Q821058
+44,howdens.com,"Howdens Joinery","United Kingdom","Retail & Consumer","FTSE 100",new,Q5921438
+45,hsbc.com,"HSBC","United Kingdom","Banking & Finance","FTSE 100",domain,Q190464
+46,icgam.com,"Intermediate Capital Group","United Kingdom","Banking & Finance","FTSE 100",domain,Q6047302
+47,ig.com,"IG Group","United Kingdom","Banking & Finance","FTSE 100",domain,Q481356
+48,ihgplc.com,"InterContinental Hotels Group","United Kingdom","Other","FTSE 100",domain,Q1424962
+49,imiplc.com,"IMI plc","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q3146728
+50,imperialbrandsplc.com,"Imperial Brands","United Kingdom","Retail & Consumer","FTSE 100",domain,Q1471161
+51,informa.com,"Informa","United Kingdom","Media & Entertainment","FTSE 100",domain,Q680946
+52,iairgroup.com,"International Airlines Group","Spain","Other","FTSE 100",domain,Q8774
+53,intertek.com,"Intertek","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q1136085
+54,investec.com,"Investec","United Kingdom","Banking & Finance","FTSE 100",domain,Q1671741
+55,ithacaenergy.com,"Ithaca Energy","United Kingdom","Energy & Utilities","FTSE 100",new,Q117231076
+56,jdsports.com,"JD Sports","United Kingdom","Other","FTSE 100",name,Q6108019
+57,lionfinancegroup.uk,"Lion Finance Group",,"Banking & Finance","FTSE 100",new,Q132559920
+58,kingfisher.com,"Kingfisher plc","United Kingdom","Other","FTSE 100",domain,Q683098
+59,landsecurities.co.uk,"Land Securities","United Kingdom","Real Estate & Infrastructure","FTSE 100",domain,Q506160
+60,legalandgeneralgroup.com,"Legal & General","United Kingdom","Insurance","FTSE 100",domain,Q1470848
+61,lloydsbankinggroup.com,"Lloyds Banking Group","United Kingdom","Banking & Finance","FTSE 100",domain,Q1152764
+62,londonmetric.com,"LondonMetric Property",,"Banking & Finance","FTSE 100",new,Q6669750
+63,lseg.com,"London Stock Exchange Group","United Kingdom","Banking & Finance","FTSE 100",domain,Q5573225
+64,mandg.co.uk,"M&G","United Kingdom","Banking & Finance","FTSE 100",domain,Q838553
+65,marksandspencer.com,"Marks & Spencer","United Kingdom","Other","FTSE 100",domain,Q714491
+66,melroseplc.net,"Melrose Industries","United Kingdom","Defence & Security","FTSE 100",new,Q3305280
+67,metlengroup.com,"Metlen Energy & Metals","Greece","Energy & Utilities","FTSE 100",new,Q1605646
+68,nationalgrid.com,"National Grid plc","United Kingdom","Energy & Utilities","FTSE 100",domain,Q1465461
+69,natwestgroup.com,"NatWest Group","United Kingdom","Banking & Finance","FTSE 100",domain,Q13218598
+70,next.co.uk,"Next plc","United Kingdom","Other","FTSE 100",domain,Q246655
+71,pearson.com,"Pearson plc","United Kingdom","Media & Entertainment","FTSE 100",domain,Q1916402
+72,pershingsquareholdings.com,"Pershing Square Holdings","United States","Banking & Finance","FTSE 100",new,Q30682229
+73,polarcapitaltechnologytrust.co.uk,"Polar Capital Technology Trust","United Kingdom","Banking & Finance","FTSE 100",new,Q7209022
+74,prudentialplc.com,"Prudential plc","United Kingdom","Insurance","FTSE 100",domain,Q1374135
+75,reckitt.com,"Reckitt","United Kingdom","Other","FTSE 100",domain,Q1190881
+76,reedelsevier.com,"RELX","United Kingdom","Media & Entertainment","FTSE 100",name,Q141817573
+77,rentokil-initial.com,"Rentokil Initial","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q2622493
+78,riotinto.com,"Rio Tinto (corporation)","United Kingdom","Materials & Chemicals","FTSE 100",domain,Q821293
+79,rolls-royce.com,"Rolls-Royce Holdings","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q243278
+80,sage.com,"Sage Group","United Kingdom","Technology","FTSE 100",domain,Q1469903
+81,sainsburys.co.uk,"Sainsbury's","United Kingdom","Other","FTSE 100",domain,Q152096
+82,scottishmortgageit.com,"Scottish Mortgage Investment Trust","United Kingdom","Banking & Finance","FTSE 100",domain,Q7437862
+83,segro.com,"Segro","United Kingdom","Real Estate & Infrastructure","FTSE 100",domain,Q2205753
+84,stwater.co.uk,"Severn Trent","United Kingdom","Energy & Utilities","FTSE 100",domain,Q503077
+85,shell.com,"Shell plc","United Kingdom","Energy & Utilities","FTSE 100",domain,Q154950
+86,smiths-group.com,"Smiths Group","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q2295406
+87,smith-nephew.com,"Smith & Nephew","United Kingdom","Healthcare","FTSE 100",domain,Q502509
+88,spiraxgroup.com,"Spirax-Sarco Engineering","United Kingdom","Transportation & Logistics","FTSE 100",domain,Q4049943
+89,sse.com,"SSE plc","United Kingdom","Energy & Utilities","FTSE 100",domain,Q493854
+90,sc.com,"Standard Chartered","United Kingdom","Banking & Finance","FTSE 100",domain,Q548278
+91,thephoenixgroup.com,"Standard Life","United Kingdom","Insurance","FTSE 100",new,Q7186887
+92,sjp.co.uk,"St. James's Place plc","United Kingdom","Banking & Finance","FTSE 100",domain,Q7588412
+93,tescoplc.com,"Tesco","United Kingdom","Other","FTSE 100",domain,Q487494
+94,tritaxbigbox.co.uk,"Tritax Big Box REIT",,"Banking & Finance","FTSE 100",new,Q20539356
+95,unilever.com,"Unilever","United Kingdom","Other","FTSE 100",domain,Q157062
+96,unitedutilities.com,"United Utilities","United Kingdom","Energy & Utilities","FTSE 100",domain,Q503038
+97,vodafone.com,"Vodafone","United Kingdom","Telecommunications","FTSE 100",domain,Q122141
+98,weir.co.uk,"Weir Group","United Kingdom","Transportation & Logistics","FTSE 100",name,Q3178400
+99,whitbread.co.uk,"Whitbread","United Kingdom","Other","FTSE 100",domain,Q1435702
+100,wpp.com,"WPP plc","United Kingdom","Media & Entertainment","FTSE 100",domain,Q1318049

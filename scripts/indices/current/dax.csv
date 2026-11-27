@@ -1,0 +1,41 @@
+rank,domain,company_name,country,sector,index,match,qid
+1,adidas-group.com,"Adidas","Germany","Retail & Consumer","DAX",name,Q3895
+2,airbus.com,"Airbus","France","Transportation & Logistics","DAX",domain,Q2311
+3,allianz.com,"Allianz","Germany","Insurance","DAX",domain,Q487292
+4,basf.com,"BASF","Germany","Materials & Chemicals","DAX",domain,Q9401
+5,bayer.com,"Bayer","Germany","Healthcare","DAX",domain,Q152051
+6,beiersdorf.com,"Beiersdorf","Germany","Retail & Consumer","DAX",domain,Q201691
+7,bmw.com,"BMW","Germany","Other","DAX",domain,Q26678
+8,brenntag.com,"Brenntag","Germany","Transportation & Logistics","DAX",domain,Q828445
+9,commerzbank.com,"Commerzbank","Germany","Banking & Finance","DAX",domain,Q157617
+10,continental.com,"Continental AG","Germany","Other","DAX",domain,Q163241
+11,daimlertruck.com,"Daimler Truck","Germany","Transportation & Logistics","DAX",domain,Q1157624
+12,db.com,"Deutsche Bank","Germany","Banking & Finance","DAX",new,Q66048
+13,deutsche-boerse.com,"Deutsche Börse","Germany","Banking & Finance","DAX",domain,Q157852
+14,deutschepost.com,"Deutsche Post","Germany","Transportation & Logistics","DAX",new,Q5266289
+15,telekom.com,"Deutsche Telekom","Germany","Telecommunications","DAX",domain,Q9396
+16,eon.com,"E.ON","Germany","Energy & Utilities","DAX",domain,Q270223
+17,fresenius.com,"Fresenius (company)","Germany","Healthcare","DAX",domain,Q705361
+18,fmcna.com,"Fresenius Medical Care","Germany","Healthcare","DAX",domain,Q650259
+19,gea.com,"GEA Group","Germany","Transportation & Logistics","DAX",domain,Q446895
+20,hannover-re.com,"Hannover Re","Germany","Insurance","DAX",domain,Q657359
+21,heidelbergmaterials.com,"Heidelberg Materials","Germany","Other","DAX",domain,Q632233
+22,henkel.com,"Henkel","Germany","Retail & Consumer","DAX",domain,Q276507
+23,infineon.com,"Infineon Technologies","Germany","Technology","DAX",domain,Q311394
+24,group.mercedes-benz.com,"Mercedes-Benz Group","Germany","Other","DAX",domain,Q27530
+25,merckgroup.com,"Merck","Germany","Healthcare","DAX",new,Q156959
+26,mtu.de,"MTU Aero Engines","Germany","Transportation & Logistics","DAX",domain,Q128929
+27,munichre.com,"Munich Re","Germany","Insurance","DAX",domain,Q166637
+28,porsche-se.com,"Porsche SE","Germany","Other","DAX",domain,Q2104551
+29,qiagen.com,"Qiagen","Netherlands","Healthcare","DAX",domain,Q315287
+30,rheinmetall.com,"Rheinmetall","Germany","Transportation & Logistics","DAX",domain,Q161544
+31,rwe.com,"RWE","Germany","Energy & Utilities","DAX",domain,Q138133
+32,sap.com,"SAP","Germany","Technology","DAX",domain,Q552581
+33,scout24.com,"Scout24","Germany","Other","DAX",new,Q2261455
+34,siemens.com,"Siemens","Germany","Transportation & Logistics","DAX",domain,Q81230
+35,siemens-energy.com,"Siemens Energy","Germany","Technology","DAX",new,Q89189545
+36,siemens-healthineers.com,"Siemens Healthineers","Germany","Healthcare","DAX",new,Q472451
+37,symrise.com,"Symrise","Germany","Materials & Chemicals","DAX",domain,Q73251
+38,volkswagenag.com,"Volkswagen Group","Germany","Transportation & Logistics","DAX",new,Q156578
+39,vonovia.de,"Vonovia","Germany","Real Estate & Infrastructure","DAX",domain,Q1202053
+40,corporate.zalando.com,"Zalando","Germany","Other","DAX",domain,Q136570

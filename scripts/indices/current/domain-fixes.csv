@@ -1,0 +1,48 @@
+company_name,current_domain,proposed_domain,reason,verified_tls
+"DaVita",davitamedicalgroup.com,davita.com,"dominio antigo morto",ok
+"Johnson & Johnson",jjmt.com.tw,jnj.com,"subsidiaria de Taiwan; atual nao liga",ok
+"IPG Photonics",ntoire-polus.ru,ipgphotonics.com,"dominio russo errado; corrigir tambem country=United States",ok
+"RELX",reedelsevier.com,relx.com,"nome antigo; atual recusa ligacao",ok (so www)
+"Weir Group",weir.co.uk,global.weir,"atual nao liga",ok
+"Enagás",enagas.com,enagas.es,"atual nao liga",ok
+"Micron Technology",micron.com.jp,micron.com,"dominio japones sem DNS",ok
+"Legal & General",legalandgeneralgroup.com,legalandgeneral.com,"atual nao liga",ok
+"WEC Energy Group",wisconsinenergy.com,wecenergygroup.com,"nome antigo; atual nao liga",ok
+"Tate & Lyle",tateandlyle.co.uk,tateandlyle.com,"atual nao liga",ok
+"LEG Immobilien",leg-nrw.de,leg-wohnen.de,"atual nao liga",ok
+"Land Securities",landsecurities.co.uk,landsec.com,"atual nao liga",ok
+"Healthpeak Properties",hcpi.com,healthpeak.com,"nome antigo; atual nao liga",ok
+"Charter Communications",charter.com,spectrum.com,"charter.com nao liga daqui; spectrum.com e a marca",ok (so www) - confirmar
+"American Electric Power",aep.com,aep.com,"nao liga daqui (pode ser bloqueio de rede) - manter e verificar a partir do Railway",inconclusivo
+"Air Liquide",airliquide.ca,airliquide.com,"filial canadiana; certificado nao corresponde",ok
+"Sherwin-Williams",sherwin-williams.com.mx,sherwin-williams.com,"filial mexicana",ok
+"Marriott International",marriott.com.cn,marriott.com,"site chines",ok
+"Ametek",ametek.co.jp,ametek.com,"filial japonesa",ok
+"OCI N.V.",oci.co.kr,oci-global.com,"e outra empresa (OCI coreana)",ok
+"Puma",eu.puma.com,puma.com,"subdominio regional",ok
+"Zalando",corporate.zalando.com,zalando.com,"subdominio corporate",ok
+"DocMorris",corporate.docmorris.com,docmorris.com,"subdominio corporate",ok
+"ArcelorMittal",corporate.arcelormittal.com,arcelormittal.com,"subdominio corporate",ok
+"Visa",corporate.visa.com,visa.com,"subdominio corporate",ok
+"ExxonMobil",corporate.exxonmobil.com,exxonmobil.com,"subdominio corporate",ok
+"Comcast",corporate.comcast.com,comcast.com,"subdominio corporate",ok
+"Carrier",corporate.carrier.com,carrier.com,"subdominio corporate",ok
+"United Airlines",ir.united.com,united.com,"subdominio de investidores",ok
+"Fifth Third",ir.53.com,53.com,"subdominio de investidores",ok
+"Alaska Air Group",investor.alaskaair.com,alaskaair.com,"subdominio de investidores",ok
+"Xcel Energy",my.xcelenergy.com,xcelenergy.com,"subdominio de clientes",ok
+"Hasbro",shop.hasbro.com,hasbro.com,"subdominio de loja",ok
+"Advance Auto Parts",shop.advanceautoparts.com,advanceautoparts.com,"subdominio de loja",ok
+"Delta Air Lines",de.delta.com,delta.com,"subdominio alemao",ok (so www)
+"Bath & Body Works (duplicado)",lb.com,bathandbodyworks.com,"duplicado: ja existe bathandbodyworks.com - fundir",ok
+"JD Sports",jdsports.com,jdsports.co.uk,"jdsports.com nao liga; empresa e britanica",ok
+"Adidas",adidas-group.com,adidas.com,"certificado expirado no atual",ok
+"Aena",aena.es,aena.es,"manter (so responde em www)",ok (so www)
+"Netflix (entrada nova)",ir.netflix.net,netflix.com,"subdominio de investidores",ok
+"NXP (entrada nova)",ru.nxp.com,nxp.com,"subdominio russo",ok
+"Lululemon (entrada nova)",shop.lululemon.com,lululemon.com,"subdominio de loja",ok
+"Insulet (falta)",,insulet.com,"sem site no Wikidata",ok
+"Lumentum (falta)",,lumentum.com,"sem site no Wikidata",ok
+"Norwegian Cruise Line (falta)",,nclhltd.com,"sem site no Wikidata",ok
+"Solaria (falta)",,solariaenergia.com,"sem site no Wikidata",ok
+"Rapid Credit Boosters",rapidcreditboosters.com,(remover do S&P),"lixo: nao e empresa do S&P 500",-

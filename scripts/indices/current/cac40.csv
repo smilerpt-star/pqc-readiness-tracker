@@ -1,0 +1,41 @@
+rank,domain,company_name,country,sector,index,match,qid
+1,all.accor.com,"Accor","France","Other","CAC 40",domain,Q212599
+2,airliquide.ca,"Air Liquide","France","Materials & Chemicals","CAC 40",domain,Q407448
+3,airbus.com,"Airbus","France","Transportation & Logistics","CAC 40",domain,Q2311
+4,corporate.arcelormittal.com,"ArcelorMittal","Luxembourg","Materials & Chemicals","CAC 40",domain,Q27893
+5,axa.com,"AXA","France","Insurance","CAC 40",domain,Q160054
+6,group.bnpparibas,"BNP Paribas","France","Banking & Finance","CAC 40",domain,Q499707
+7,bouygues.com,"Bouygues","France","Other","CAC 40",domain,Q895325
+8,bureauveritas.com,"Bureau Veritas","France","Transportation & Logistics","CAC 40",domain,Q1974503
+9,capgemini.com,"Capgemini","France","Technology","CAC 40",domain,Q1034621
+10,carrefour.com,"Carrefour","France","Other","CAC 40",domain,Q217599
+11,credit-agricole.com,"Crédit Agricole","France","Banking & Finance","CAC 40",domain,Q590952
+12,danone.com,"Danone","France","Retail & Consumer","CAC 40",domain,Q329426
+13,3ds.com,"Dassault Systèmes","France","Technology","CAC 40",new,Q1172038
+14,eiffage.com,"Eiffage","France","Other","CAC 40",domain,Q1302944
+15,agence.engie-homeservices.fr,"Engie","France","Energy & Utilities","CAC 40",domain,Q13416787
+16,essilorluxottica.com,"EssilorLuxottica","France","Healthcare","CAC 40",domain,Q56853086
+17,eurofins.com,"Eurofins Scientific","France","Healthcare","CAC 40",new,Q324846
+18,euronext.com,"Euronext","Netherlands","Banking & Finance","CAC 40",domain,Q842108
+19,hermes.com,"Hermès","France","Retail & Consumer","CAC 40",domain,Q843887
+20,kering.com,"Kering","France","Retail & Consumer","CAC 40",domain,Q931207
+21,loreal.com,"L'Oréal","France","Retail & Consumer","CAC 40",domain,Q156077
+22,legrandgroup.com,"Legrand","France","Industrials","CAC 40",new,Q636755
+23,lvmh.com,"LVMH","France","Retail & Consumer","CAC 40",domain,Q504998
+24,michelin.com,"Michelin","France","Other","CAC 40",domain,Q151107
+25,orange.com,"Orange S.A.","France","Telecommunications","CAC 40",domain,Q1431486
+26,pernod-ricard.com,"Pernod Ricard","France","Retail & Consumer","CAC 40",domain,Q837049
+27,publicisgroupe.com,"Publicis","France","Media & Entertainment","CAC 40",domain,Q1537378
+28,renaultgroup.com,"Renault","France","Other","CAC 40",domain,Q6686
+29,safran-group.com,"Safran","France","Transportation & Logistics","CAC 40",domain,Q1886126
+30,saint-gobain.com,"Saint-Gobain","France","Other","CAC 40",domain,Q678565
+31,sanofi.com,"Sanofi","France","Healthcare","CAC 40",domain,Q158205
+32,se.com,"Schneider Electric","France","Transportation & Logistics","CAC 40",domain,Q49053
+33,societegenerale.com,"Société Générale","France","Banking & Finance","CAC 40",domain,Q270363
+34,stellantis.com,"Stellantis","Netherlands","Other","CAC 40",domain,Q97439162
+35,st.com,"STMicroelectronics","Netherlands","Technology","CAC 40",domain,Q661845
+36,thalesgroup.com,"Thales Group","France","Transportation & Logistics","CAC 40",domain,Q1161666
+37,totalenergies.com,"TotalEnergies","France","Energy & Utilities","CAC 40",domain,Q154037
+38,urw.com,"Unibail-Rodamco-Westfield","France","Real Estate & Infrastructure","CAC 40",domain,Q608518
+39,veolia.com,"Veolia","France","Energy & Utilities","CAC 40",domain,Q1632461
+40,vinci.com,"Vinci SA","France","Other","CAC 40",domain,Q1475312
