@@ -2,7 +2,7 @@ const express = require("express");
 
 const domainService = require("../services/domainService");
 const { autoAssignTlsScan, runDomainTest } = require("../services/domainTestService");
-const { requireAuth } = require("../middleware/auth");
+const { requireAuth, isAdmin } = require("../middleware/auth");
 const { parseIdParam } = require("../lib/validation");
 
 const router = express.Router();
@@ -25,7 +25,8 @@ async function maybeAutoAssign(domain) {
 router.get("/", async (req, res, next) => {
   try {
     const data = await domainService.listDomains();
-    res.json({ data });
+    // `notes` can hold submitter details from public submissions — admin only.
+    res.json({ data: isAdmin(req) ? data : (data || []).map(({ notes, ...rest }) => rest) });
   } catch (error) {
     next(error);
   }
@@ -33,7 +34,18 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const data = await domainService.createDomain(req.body);
+    let body = req.body;
+    if (!isAdmin(req)) {
+      // Public submission: always pending review, whatever the client sends.
+      // Only an admin can create an active (monitored) domain.
+      const notes = typeof body?.notes === "string" ? body.notes : "";
+      body = {
+        ...body,
+        active: false,
+        notes: notes.includes("Source: public submission") ? notes : [notes, "Source: public submission"].filter(Boolean).join("\n"),
+      };
+    }
+    const data = await domainService.createDomain(body);
     res.status(201).json({ data });
     maybeAutoAssign(data); // after response is sent
   } catch (error) {

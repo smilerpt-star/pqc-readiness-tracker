@@ -10,6 +10,14 @@ function safeEqual(a, b) {
   return crypto.timingSafeEqual(ab, bb);
 }
 
+// Non-throwing check: true only for a request carrying the valid admin token.
+function isAdmin(req) {
+  if (!env.adminToken) return false;
+  const header = req.headers["authorization"] || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7) : null;
+  return Boolean(token) && safeEqual(token, env.adminToken);
+}
+
 function requireAuth(req, res, next) {
   if (!env.adminToken) {
     // Fail closed: never leave admin routes open if the token is misconfigured.
@@ -26,4 +34,4 @@ function requireAuth(req, res, next) {
   next();
 }
 
-module.exports = { requireAuth };
+module.exports = { requireAuth, isAdmin };

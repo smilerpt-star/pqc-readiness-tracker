@@ -55,11 +55,21 @@ const publicLimiter = rateLimit({
   legacyHeaders: false,
   message: { error: "Too Many Requests", message: "Rate limit exceeded — please try again later." },
 });
+const { isAdmin } = require("./middleware/auth");
+const submitLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => isAdmin(req),
+  message: { error: "Too Many Requests", message: "Too many submissions — please try again later." },
+});
 app.use(apiLimiter);
 
 app.use("/health", healthRoutes);
 app.use("/auth", authRoutes);
 app.use("/public", publicLimiter, publicRoutes);
+app.post("/domains", submitLimiter);
 app.use("/domains", domainRoutes);
 app.use("/test-types", testTypeRoutes);
 app.use("/domain-tests", domainTestRoutes);
