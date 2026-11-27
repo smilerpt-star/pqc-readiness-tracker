@@ -6,6 +6,9 @@ const { promisify } = require("util");
 const execFileAsync = promisify(execFile);
 const TLS_TIMEOUT_MS = 8000;
 const OPENSSL_TIMEOUT_MS = 10000;
+// v3: www. fallback when the bare domain does not answer on :443, and an
+// "unreachable" status (no score) instead of a 0 / "legacy" for hosts that never answer.
+const SCAN_VERSION = "tls-pqc-v3";
 
 // PQC hybrid groups to offer in ClientHello — in preference order.
 // Note: X448MLKEM1024 is rejected by OpenSSL 3.6 s_client -groups flag.
@@ -275,7 +278,7 @@ function computeScore(kemInfo, certData, dnsInfo) {
     });
   }
 
-  // ── Certificate (0–20, informational) ─────────────────────────────────────
+  // ── Certificate (0–12, informational) ─────────────────────────────────────
   // Note: in a hybrid deployment RSA/ECDSA certs alongside PQC key exchange
   // is current best practice (NIST SP 800-208 guidance). Classical certs are
   // NOT an immediate PQC failure — only the key exchange exposes past sessions.
@@ -371,18 +374,83 @@ function buildNextActions(kemInfo, certData, dnsInfo) {
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
+// ─── Reachability ─────────────────────────────────────────────────────────────
+// Many organisations only serve HTTPS on www.<domain> (the bare domain refuses or
+// times out on :443). Scanning only the bare domain recorded those as a score of 0
+// ("legacy") without measuring anything. We now pick the host that actually answers.
+
+function canConnect(host) {
+  return new Promise((resolve) => {
+    let done = false;
+    const finish = (ok) => { if (!done) { done = true; clearTimeout(timer); socket.destroy(); resolve(ok); } };
+    const socket = tls.connect({ host, port: 443, servername: host, rejectUnauthorized: false });
+    const timer = setTimeout(() => finish(false), TLS_TIMEOUT_MS);
+    socket.once("secureConnect", () => finish(true));
+    socket.once("error", () => finish(false));
+  });
+}
+
+// Order: the domain as listed → www.<domain> → the domain once more (absorbs a
+// transient blip before declaring it unreachable). Returns null if none answers.
+async function resolveScanTarget(domain) {
+  if (await canConnect(domain)) return { target: domain, via: "domain" };
+  if (!domain.startsWith("www.")) {
+    const www = `www.${domain}`;
+    if (await canConnect(www)) return { target: www, via: "www" };
+  }
+  if (await canConnect(domain)) return { target: domain, via: "domain" };
+  return null;
+}
+
+function unreachableResult(domain) {
+  return {
+    status: "unreachable",
+    score: null, // not a measurement — excluded from all readiness statistics
+    summary: {
+      scan_version: SCAN_VERSION,
+      scan_mode: "live",
+      requested_domain: domain,
+      scanned_target: null,
+      reachability: "unreachable",
+      pqc_detection_available: null,
+      transport: null,
+      certificate: null,
+      dns: null,
+      pqc_outlook: {
+        exposure_level: null,
+        findings: [{
+          level: "info",
+          message: `No TLS service answered on ${domain}:443${domain.startsWith("www.") ? "" : ` or www.${domain}:443`} — not scored and excluded from readiness statistics until reachable`,
+        }],
+        next_actions: [],
+      },
+    },
+    raw: { runner_key: "tls_scan", reachability: "unreachable" },
+  };
+}
+
 async function scanDomain(domain) {
+  const reach = await resolveScanTarget(domain);
+  if (!reach) return unreachableResult(domain);
+  const target = reach.target;
+
   const opensslBin = await findPqcOpenssl();
 
   const [kemInfo, certData, dnsInfo] = await Promise.all([
     opensslBin
-      ? probeKeyExchange(opensslBin, domain)
+      ? probeKeyExchange(opensslBin, target)
       : Promise.resolve({ negotiatedGroup: null, protocol: null, serverTempKey: null, isPqcKem: false, available: false }),
-    getCertInfo(domain),
-    getDnsInfo(domain),
+    getCertInfo(target),
+    getDnsInfo(target),
   ]);
 
   const { score, status, findings } = computeScore(kemInfo, certData, dnsInfo);
+  if (reach.via === "www") {
+    findings.push({
+      level: "info",
+      message: `${domain} does not accept HTTPS connections on port 443 — scanned ${target} instead`,
+    });
+  }
   const cert = certData?.cert;
   const protocol = kemInfo.protocol || certData?.protocol;
 
@@ -390,9 +458,11 @@ async function scanDomain(domain) {
     status,
     score,
     summary: {
-      scan_version: "tls-pqc-v2",
+      scan_version: SCAN_VERSION,
       scan_mode: "live",
-      scanned_target: domain,
+      requested_domain: domain,
+      scanned_target: target,
+      reachability: reach.via,
       pqc_detection_available: opensslBin !== null,
       transport: {
         tls_version: protocol,
@@ -421,6 +491,7 @@ async function scanDomain(domain) {
     },
     raw: {
       runner_key: "tls_scan",
+      reachability: reach.via,
       openssl_bin: opensslBin,
       negotiated_group: kemInfo.negotiatedGroup,
       server_temp_key: kemInfo.serverTempKey,

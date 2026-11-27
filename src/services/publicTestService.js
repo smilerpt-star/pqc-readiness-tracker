@@ -18,6 +18,7 @@ async function runPublicTest(payload) {
     scanned_at: new Date().toISOString(),
     status: result.status,
     score: result.score,
+    scanned_target: result.summary.scanned_target,
     transport: result.summary.transport,
     certificate: result.summary.certificate,
     dns: result.summary.dns,

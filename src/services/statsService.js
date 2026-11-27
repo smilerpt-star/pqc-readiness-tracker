@@ -99,6 +99,15 @@ async function computeStats() {
   const activeDomains = (domains || []).filter(d => d.active !== false);
   const allScores = Object.values(scoreMap);
 
+  // Domains whose latest scan found no reachable TLS endpoint: not scored and
+  // therefore absent from every readiness figure. Reported for transparency.
+  const activeIds = new Set(activeDomains.map(d => d.id));
+  const unreachable_count = new Set(
+    (domainTests || [])
+      .filter(dt => dt.last_status === "unreachable" && activeIds.has(dt.domain_id))
+      .map(dt => dt.domain_id)
+  ).size;
+
   // ── Delta (today vs yesterday) by country and sector — from stats_delta_1d ──
   const deltaMap = { country: {}, sector: {} };
   (deltaRows || []).forEach(r => {
@@ -188,6 +197,7 @@ async function computeStats() {
     total_domains:  (domains || []).length,
     active_domains: activeDomains.length,
     total_scored:   n,
+    unreachable_count,
     avg_score:      avg(allScores),
     last_scan_at:   lastRunAt,
     pqc_ready:   { count: pqc_ready_count,   pct: n ? Math.round(pqc_ready_count   / n * 100) : 0 },
